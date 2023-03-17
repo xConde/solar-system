@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
  
   function calculateScalingFactor() {
     const minDimension = Math.min(window.innerWidth, window.innerHeight);
-    return minDimension / 200;
+    return minDimension / 150;
   }
 
   function calculateApproximateDistance(planet, scalingFactor) {
@@ -71,6 +71,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const y = scaledDistance * Math.sin(angle);
 
     return { x, y };
+  }
+
+  function updateScalingFactor() {
+    const newScalingFactor = calculateScalingFactor();
+    planets.forEach(planet => {
+      const planetEl = document.querySelector(`.planet.${planet.name}`);
+      const { x, y } = calculateApproximateDistance(planet, newScalingFactor);
+      planetEl.style.transform = `translate(${x}em, ${y}em)`;
+  
+      const speedFactor = 100;
+      const adjustedOrbitalPeriod = planet.orbitalPeriod / speedFactor * newScalingFactor;
+      planetEl.style.animationDuration = `${adjustedOrbitalPeriod}s`;
+  
+      planet.moons.forEach(moon => {
+        const moonEl = document.querySelector(`.moon.moon-${moon.name}`);
+        moonEl.style.setProperty('--distance', moon.distance / (newScalingFactor * 2) + 'em');
+      });
+    });
   }
 
   const solarSystem = document.querySelector('.solar-system');
@@ -108,5 +126,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const speedFactor = 50;
     planetEl.style.animationDuration = `${planet.orbitalPeriod / speedFactor}s`;
+  });
+
+  updateScalingFactor();
+
+  window.addEventListener('resize', () => {
+    updateScalingFactor();
   });
 });
