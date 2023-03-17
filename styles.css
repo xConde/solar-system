@@ -1,0 +1,299 @@
+@keyframes orbit {
+  0% {
+    transform: rotate(var(--rotation))
+      translateX(var(--distance))
+      translateY(-50%)
+      rotate(calc(-1 * var(--rotation)));
+  }
+  100% {
+    transform: rotate(calc(var(--rotation) + 360deg))
+      translateX(var(--distance))
+      translateY(-50%)
+      rotate(calc(-1 * var(--rotation) - 360deg));
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes glowing {
+  0% {
+    box-shadow: 0 0 5px #f39c12, 0 0 10px #f39c12, 0 0 15px #f39c12, 0 0 20px #f39c12;
+  }
+  50% {
+    box-shadow: 0 0 10px #f39c12, 0 0 20px #f39c12, 0 0 30px #f39c12, 0 0 40px #f39c12;
+  }
+  100% {
+    box-shadow: 0 0 5px #f39c12, 0 0 10px #f39c12, 0 0 15px #f39c12, 0 0 20px #f39c12;
+  }
+}
+
+html, body {
+  font-family: 'Arial', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background-color: #000;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.solar-system {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.sun {
+  position: absolute;
+  background-color: #f39c12;
+  width: 10rem;
+  height: 10rem;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  animation-name: rotate, glowing;
+  animation-duration: 2400s, 3s;
+  animation-iteration-count: infinite, infinite;
+  animation-timing-function: linear, ease-in-out;
+}
+
+.sun::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(243, 156, 18, 0.7), rgba(243, 156, 18, 0.2) 70%);
+  z-index: -1;
+  animation: glowing 3s infinite ease-in-out;
+}
+
+
+.planet, .moon {
+  position: absolute;
+  opacity: 0;
+  border-radius: 50%;
+  animation-name: orbit;
+  animation-duration: var(--duration);
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  transform: rotate(var(--rotation)) translateX(calc(-50% + var(--distance)em)) translateY(-50%);
+  transition: transform 1s, opacity 1s;
+}
+
+.planet {
+  left: 50%;
+  top: 50%;
+  z-index: 5;
+}
+
+.planet:hover {
+  z-index: 15;
+}
+
+.planet:hover::before {
+  content: attr(data-label);
+  position: absolute;
+  font-size: 1.2rem;
+  top: -2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0.5rem;
+  border-radius: 1rem;
+  opacity: 1;
+  transition: all 0.3s ease-in-out;
+}
+
+.planet-label {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 5px;
+  text-shadow: 0 0 2px #000;
+  margin-top: 5px;
+}
+
+.planet:hover .planet-label {
+  opacity: 1;
+}
+
+.moon {
+  background-color: #ccc;
+  z-index: 4;
+}
+
+.earth {
+  background-color: #3498db;
+  width: 2.3625rem;
+  height: 2.3625rem;
+  --distance: 10rem;
+  --duration: 365s;
+  --rotation: 40deg;
+}
+
+.mars {
+  background-color: #e74c3c;
+  width: 1.35rem;
+  height: 1.35rem;
+  --distance: 12.5rem;
+  --duration: 687s;
+  --rotation: 60deg;
+}
+
+.jupiter {
+  background-color: #f1c40f;
+  width: 4.725rem;
+  height: 4.725rem;
+  --distance: 15rem;
+  --duration: 4300s;
+  --rotation: 80deg;
+}
+
+.saturn {
+  background-color: #e67e22;
+  width: 4.05rem;
+  height: 4.05rem;
+  --distance: 17.5rem;
+  --duration: 10750s;
+  --rotation: 100deg;
+}
+
+.uranus {
+  background-color: #5da6e1;
+  width: 3.675rem;
+  height: 3.675rem;
+  --distance: 20rem;
+  --duration: 30600s;
+  --rotation: 120deg;
+}
+
+.neptune {
+  background-color: #4a6f8d;
+  width: 3.675rem;
+  height: 3.675rem;
+  --distance: 22.5rem;
+  --duration: 60225s;
+  --rotation: 140deg;
+}
+
+/* Earth */
+.moon-earth {
+  width: 0.675rem;
+  height: 0.675rem;
+  --distance: 1rem;
+  --duration: 27s;
+  --rotation: 0deg;
+}
+
+/* Mars */
+.moon-phobos,
+.moon-deimos {
+  width: 0.3375rem;
+  height: 0.3375rem;
+}
+
+.moon-phobos {
+  --distance: 0.5rem;
+  --duration: 8s;
+  --rotation: 0deg;
+}
+
+.moon-deimos {
+  --distance: 0.75rem;
+  --duration: 30s;
+  --rotation: 45deg;
+}
+
+/* Jupiter */
+.moon-io,
+.moon-europa,
+.moon-ganymede,
+.moon-callisto {
+  width: 0.45rem;
+  height: 0.45rem;
+}
+
+.moon-io {
+  --distance: 1.5rem;
+  --duration: 42s;
+  --rotation: 0deg;
+}
+
+.moon-europa {
+  --distance: 2rem;
+  --duration: 85s;
+  --rotation: 30deg;
+}
+
+.moon-ganymede {
+  --distance: 2.5rem;
+  --duration: 172s;
+  --rotation: 60deg;
+}
+
+.moon-callisto {
+  --distance: 3rem;
+  --duration: 400s;
+  --rotation: 90deg;
+}
+
+/* Saturn */
+.moon-titan {
+  width: 0.9rem;
+  height: 0.9rem;
+  --distance: 1.75rem;
+  --duration: 382s;
+  --rotation: 0deg;
+}
+
+/* Uranus */
+.moon-titania,
+.moon-oberon {
+  width: 0.675rem;
+  height: 0.675rem;
+}
+
+.moon-titania {
+  --distance: 1.25rem;
+  --duration: 42s;
+  --rotation: 0deg;
+}
+
+.moon-oberon {
+  --distance: 1.75rem;
+  --duration: 65s;
+  --rotation: 45deg;
+}
+
+/* Neptune */
+.moon-triton {
+  width: 0.675rem;
+  height: 0.675rem;
+  --distance: 1.25rem;
+  --duration: 141s;
+  --rotation: 0deg;
+}
