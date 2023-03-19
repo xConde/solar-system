@@ -1,5 +1,22 @@
 document.addEventListener('DOMContentLoaded', function () {
-  const planets = [
+  const planets = getPlanetData();
+  const solarSystem = document.querySelector('.solar-system');
+  createSun(solarSystem);
+  const scalingFactor = calculateScalingFactor();
+
+  planets.forEach(planet => {
+    const planetEl = createPlanetElement(planet, solarSystem);
+    positionPlanet(planet, planetEl, scalingFactor);
+    createMoons(planet, planetEl, scalingFactor);
+  });
+
+  updateScalingFactor(planets, scalingFactor);
+
+  window.addEventListener('resize', () => updateScalingFactor(planets, scalingFactor));
+});
+
+function getPlanetData() {
+  return [
     {
       name: 'earth',
       distance: 1,
@@ -54,83 +71,74 @@ document.addEventListener('DOMContentLoaded', function () {
       ],
     },
   ];
+}
 
-  function getRandomRotation() {
-    return Math.random() * 360;
-  }
- 
-  function calculateScalingFactor() {
-    const minDimension = Math.min(window.innerWidth, window.innerHeight);
-    return minDimension / 150;
-  }
-
-  function calculateApproximateDistance(planet, scalingFactor) {
-    const scaledDistance = planet.distance * scalingFactor;
-    const angle = Math.random() * 2 * Math.PI;
-    const x = scaledDistance * Math.cos(angle);
-    const y = scaledDistance * Math.sin(angle);
-
-    return { x, y };
-  }
-
-  function updateScalingFactor() {
-    const newScalingFactor = calculateScalingFactor();
-    planets.forEach(planet => {
-      const planetEl = document.querySelector(`.planet.${planet.name}`);
-      const { x, y } = calculateApproximateDistance(planet, newScalingFactor);
-      planetEl.style.transform = `translate(${x}em, ${y}em)`;
-  
-      const speedFactor = 100;
-      const adjustedOrbitalPeriod = planet.orbitalPeriod / speedFactor * newScalingFactor;
-      planetEl.style.animationDuration = `${adjustedOrbitalPeriod}s`;
-  
-      planet.moons.forEach(moon => {
-        const moonEl = document.querySelector(`.moon.moon-${moon.name}`);
-        moonEl.style.setProperty('--distance', moon.distance / (newScalingFactor * 2) + 'em');
-      });
-    });
-  }
-
-  const solarSystem = document.querySelector('.solar-system');
+function createSun(parentElement) {
   const sunEl = document.createElement('div');
   sunEl.classList.add('sun');
-  solarSystem.appendChild(sunEl);
+  parentElement.appendChild(sunEl);
+}
 
-  const scalingFactor = calculateScalingFactor();
+function createPlanetElement(planet, parentElement) {
+  const planetEl = document.createElement('div');
+  planetEl.classList.add('planet', planet.name);
+  parentElement.appendChild(planetEl);
 
+  const label = document.createElement('div');
+  label.classList.add('planet-label');
+  label.innerText = planet.name;
+  planetEl.appendChild(label);
+
+  return planetEl;
+}
+
+function createMoons(planet, planetEl, scalingFactor) {
+  planet.moons.forEach(moon => {
+    const moonEl = document.createElement('div');
+    moonEl.classList.add('moon', `moon-${moon.name}`);
+    planetEl.appendChild(moonEl);
+    moonEl.style.setProperty('--distance', moon.distance / (scalingFactor * 2) + 'em');
+    moonEl.style.opacity = 1;
+  });
+  planetEl.style.opacity = 1;
+}
+
+function calculateScalingFactor() {
+  const minDimension = Math.min(window.innerWidth, window.innerHeight);
+  return minDimension / 150;
+}
+
+function calculateApproximateDistance(planet, scalingFactor) {
+  const scaledDistance = planet.distance * scalingFactor;
+  const angle = Math.random() * 2 * Math.PI;
+  const x = scaledDistance * Math.cos(angle);
+  const y = scaledDistance * Math.sin(angle);
+
+  return { x, y };
+}
+
+function positionPlanet(planet, planetEl, scalingFactor) {
+  const { x, y } = calculateApproximateDistance(planet, scalingFactor);
+  planetEl.style.transform = `translate(${x}em, ${y}em)`;
+
+  const randomRotation = Math.random() * 360;
+  planetEl.style.setProperty('--rotation', randomRotation + 'deg');
+}
+
+function updateScalingFactor(planets, scalingFactor) {
+  const newScalingFactor = calculateScalingFactor();
   planets.forEach(planet => {
-    const planetEl = document.createElement('div');
-    planetEl.classList.add('planet', planet.name);
-    solarSystem.appendChild(planetEl);
-
-    const label = document.createElement('div');
-    label.classList.add('planet-label');
-    label.innerText = planet.name;
-    planetEl.appendChild(label);
-
-    const { x, y } = calculateApproximateDistance(planet, scalingFactor);
+    const planetEl = document.querySelector(`.planet.${planet.name}`);
+    const { x, y } = calculateApproximateDistance(planet, newScalingFactor);
     planetEl.style.transform = `translate(${x}em, ${y}em)`;
-    
-    const randomRotation = getRandomRotation();
-    planetEl.style.setProperty('--rotation', randomRotation + 'deg');
+
+    const speedFactor = 100;
+    const adjustedOrbitalPeriod = planet.orbitalPeriod / speedFactor * newScalingFactor;
+    planetEl.style.animationDuration = `${adjustedOrbitalPeriod}s`;
 
     planet.moons.forEach(moon => {
-      const moonEl = document.createElement('div');
-      moonEl.classList.add('moon', `moon-${moon.name}`);
-      moonEl.style.setProperty('--distance', moon.distance / (scalingFactor * 2) + 'em');
-      planetEl.appendChild(moonEl);
-      moonEl.style.opacity = 1;
+      const moonEl = document.querySelector(`.moon.moon-${moon.name}`);
+      moonEl.style.setProperty('--distance', moon.distance / (newScalingFactor * 2) + 'em');
     });
-
-    planetEl.style.opacity = 1;
-
-    const speedFactor = 50;
-    planetEl.style.animationDuration = `${planet.orbitalPeriod / speedFactor}s`;
   });
-
-  updateScalingFactor();
-
-  window.addEventListener('resize', () => {
-    updateScalingFactor();
-  });
-});
+}
