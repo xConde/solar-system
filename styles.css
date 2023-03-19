@@ -7,13 +7,38 @@
 /* Media queries */
 @media (max-width: 480px) {
   :root {
-    --earth-size: 1.5rem;
-    --earth-moon-size: 0.45rem;
+    --earth-size: .75rem;
+    --earth-moon-size: 0.21rem;
   }
-  
+
+  .sun {
+    width: 4rem;
+    height: 4rem;
+  }
+}
+
+
+@media (max-width: 768px) {
+  :root {
+    --earth-size: 1.5rem;
+    --earth-moon-size: 0.42rem;
+  }
+
   .sun {
     width: 6rem;
     height: 6rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --earth-size: 2rem;
+    --earth-moon-size: 0.56rem;
+  }
+
+  .sun {
+    width: 8rem;
+    height: 8rem;
   }
 }
 
@@ -126,10 +151,12 @@ html, body {
 .planet:hover::before {
   content: attr(data-label);
   position: absolute;
+  width: 200%;
+  height: 200%;
   font-size: 1.2rem;
   top: -2rem;
   transform: translateX(-50%);
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: transparent;
   padding: 0.5rem;
   border-radius: 1rem;
   opacity: 1;
