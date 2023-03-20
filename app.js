@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
   let stars = spawnStars(solarSystem, 100);
   updateScalingFactor(planets, stars, scalingFactor);
 
-  window.addEventListener('resize', () => updateScalingFactor(planets, stars, scalingFactor));
+  window.addEventListener('resize', debounce(() => updateScalingFactor(planets, stars, scalingFactor), 200));
   planetsEl.forEach(planetEl => {
     planetEl.addEventListener('click', handlePlanetClick);
   });
@@ -211,4 +211,16 @@ function updateScalingFactor(planets, stars, scalingFactor) {
 
 function handlePlanetClick(event) {
   event.target.classList.toggle('clicked');
+}
+
+function debounce(func, wait) {
+  let timeout;
+  return function () {
+    const context = this;
+    const args = arguments;
+    clearTimeout(timeout);
+    timeout = setTimeout(function () {
+      func.apply(context, args);
+    }, wait);
+  };
 }
