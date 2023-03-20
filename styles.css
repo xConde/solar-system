@@ -138,7 +138,6 @@ html, body {
   animation: glowing 3s infinite ease-in-out;
 }
 
-
 .planet, .moon {
   position: absolute;
   opacity: 0;
@@ -160,19 +159,14 @@ html, body {
   position: absolute;
   top: -50%;
   left: -50%;
-  width: 400%;
-  height: 400%;
+  width: 200%;
+  height: 200%;
   z-index: 1;
 }
 
 .planet:before.mars, .planet:before.earth {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 800%;
-  height: 800%;
-  z-index: 1;
+  width: 400%;
+  height: 400%;
 }
 
 .planet:hover {
@@ -182,15 +176,7 @@ html, body {
 .planet:hover::before, .planet.clicked::before {
   content: attr(data-label);
   position: absolute;
-  width: 200%;
-  height: 200%;
-  font-size: 1.2rem;
-  top: -2rem;
-  transform: translateX(-50%);
   background-color: transparent;
-  padding: 0.5rem;
-  border-radius: 1rem;
-  opacity: 1;
   transition: all 0.3s ease-in-out;
 }
 
