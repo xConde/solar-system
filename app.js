@@ -10,9 +10,10 @@ document.addEventListener('DOMContentLoaded', function () {
     createMoons(planet, planetEl, scalingFactor);
   });
 
-  updateScalingFactor(planets, scalingFactor);
+  let stars = spawnStars(solarSystem, 100);
+  updateScalingFactor(planets, stars, scalingFactor);
 
-  window.addEventListener('resize', () => updateScalingFactor(planets, scalingFactor));
+  window.addEventListener('resize', () => updateScalingFactor(planets, stars, scalingFactor));
 });
 
 function getPlanetData() {
@@ -79,6 +80,22 @@ function createSun(parentElement) {
   parentElement.appendChild(sunEl);
 }
 
+function getSunRadius() {
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
+  const minScreenSize = Math.min(screenWidth, screenHeight);
+
+  if (screenWidth <= 480) {
+    return minScreenSize * 0.04; // 4rem
+  } else if (screenWidth <= 768) {
+    return minScreenSize * 0.03; // 6rem
+  } else if (screenWidth <= 1024) {
+    return minScreenSize * 0.02; // 8rem
+  } else {
+    return minScreenSize * 0.025; // 10rem
+  }
+}
+
 function createPlanetElement(planet, parentElement) {
   const planetEl = document.createElement('div');
   planetEl.classList.add('planet', planet.name);
@@ -103,6 +120,45 @@ function createMoons(planet, planetEl, scalingFactor) {
   planetEl.style.opacity = 1;
 }
 
+function createStar() {
+  const star = document.createElement('div');
+  star.classList.add('star');
+
+  const size = Math.random() * 2 + 1;
+  star.style.width = `${size}px`;
+  star.style.height = `${size}px`;
+
+  positionStar(star);
+
+  const duration = Math.random() * 2 + 1;
+  star.style.animationDuration = `${duration}s`;
+
+  return star;
+}
+
+function positionStar(star) {
+  const safeZoneMargin = 1.15;
+  const safeZoneRadius = getSunRadius() * safeZoneMargin;
+  let x, y;
+  do {
+    x = Math.random() * 100;
+    y = Math.random() * 100;
+  } while (Math.sqrt(Math.pow(50 - x, 2) + Math.pow(50 - y, 2)) < safeZoneRadius);
+
+  star.style.left = `${x}vw`;
+  star.style.top = `${y}vh`;
+}
+
+function spawnStars(parentElement, numberOfStars) {
+  const stars = [];
+  for (let i = 0; i < numberOfStars; i++) {
+    const star = createStar();
+    parentElement.appendChild(star);
+    stars.push(star);
+  }
+  return stars;
+}
+
 function calculateScalingFactor() {
   const minDimension = Math.min(window.innerWidth, window.innerHeight);
   return minDimension / 150;
@@ -125,14 +181,14 @@ function positionPlanet(planet, planetEl, scalingFactor) {
   planetEl.style.setProperty('--rotation', randomRotation + 'deg');
 }
 
-function updateScalingFactor(planets, scalingFactor) {
+function updateScalingFactor(planets, stars, scalingFactor) {
   const newScalingFactor = calculateScalingFactor();
   planets.forEach(planet => {
     const planetEl = document.querySelector(`.planet.${planet.name}`);
     const { x, y } = calculateApproximateDistance(planet, newScalingFactor);
     planetEl.style.transform = `translate(${x}em, ${y}em)`;
 
-    const speedFactor = 100;
+    const speedFactor = 500;
     const adjustedOrbitalPeriod = planet.orbitalPeriod / speedFactor * newScalingFactor;
     planetEl.style.animationDuration = `${adjustedOrbitalPeriod}s`;
 
@@ -141,4 +197,9 @@ function updateScalingFactor(planets, scalingFactor) {
       moonEl.style.setProperty('--distance', moon.distance / (newScalingFactor * 2) + 'em');
     });
   });
+
+  stars.forEach(star => {
+    positionStar(star);
+  });
+
 }
