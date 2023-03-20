@@ -1,7 +1,7 @@
 /* Custom properties */
 :root {
   --earth-size: 2.3625rem;
-  --earth-moon-size: 0.675rem;
+  --luna-moon-size: 0.675rem;
 }
 
 /* Media queries */
@@ -20,7 +20,7 @@
 @media (max-width: 768px) {
   :root {
     --earth-size: 1.5rem;
-    --earth-moon-size: 0.42rem;
+    --luna-moon-size: 0.42rem;
   }
 
   .sun {
@@ -32,7 +32,7 @@
 @media (max-width: 1024px) {
   :root {
     --earth-size: 2rem;
-    --earth-moon-size: 0.56rem;
+    --luna-moon-size: 0.56rem;
   }
 
   .sun {
@@ -278,9 +278,9 @@ html, body {
 }
 
 /* Earth */
-.moon-earth {
-  width: var(--earth-moon-size);
-  height: var(--earth-moon-size);
+.moon-luna {
+  width: var(--luna-moon-size);
+  height: var(--luna-moon-size);
   --distance: 1rem;
   --duration: 27s;
   --rotation: 0deg;
@@ -289,8 +289,8 @@ html, body {
 /* Mars */
 .moon-phobos,
 .moon-deimos {
-  width: calc(var(--earth-moon-size) * 0.5);
-  height: calc(var(--earth-moon-size) * 0.5);
+  width: calc(var(--luna-moon-size) * 0.5);
+  height: calc(var(--luna-moon-size) * 0.5);
 }
 
 .moon-phobos {
@@ -310,8 +310,8 @@ html, body {
 .moon-europa,
 .moon-ganymede,
 .moon-callisto {
-  width: calc(var(--earth-moon-size) * 0.666);
-  height: calc(var(--earth-moon-size) * 0.666);
+  width: calc(var(--luna-moon-size) * 0.666);
+  height: calc(var(--luna-moon-size) * 0.666);
 }
 
 .moon-io {
@@ -340,8 +340,8 @@ html, body {
 
 /* Saturn */
 .moon-titan {
-  width: calc(var(--earth-moon-size) * 1.333);
-  height: calc(var(--earth-moon-size) * 1.333);
+  width: calc(var(--luna-moon-size) * 1.333);
+  height: calc(var(--luna-moon-size) * 1.333);
   --distance: 1.75rem;
   --duration: 382s;
   --rotation: 0deg;
@@ -350,8 +350,8 @@ html, body {
 /* Uranus */
 .moon-titania,
 .moon-oberon {
-  width: var(--earth-moon-size);
-  height: var(--earth-moon-size);
+  width: var(--luna-moon-size);
+  height: var(--luna-moon-size);
 }
 
 .moon-titania {
@@ -368,8 +368,8 @@ html, body {
 
 /* Neptune */
 .moon-triton {
-  width: var(--earth-moon-size);
-  height: var(--earth-moon-size);
+  width: var(--luna-moon-size);
+  height: var(--luna-moon-size);
   --distance: 1.25rem;
   --duration: 141s;
   --rotation: 0deg;
