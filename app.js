@@ -4,16 +4,21 @@ document.addEventListener('DOMContentLoaded', function () {
   createSun(solarSystem);
   const scalingFactor = calculateScalingFactor();
 
+  let planetsEl = [];
   planets.forEach(planet => {
     const planetEl = createPlanetElement(planet, solarSystem);
     positionPlanet(planet, planetEl, scalingFactor);
     createMoons(planet, planetEl, scalingFactor);
+    planetsEl.push(planetEl);
   });
 
   let stars = spawnStars(solarSystem, 100);
   updateScalingFactor(planets, stars, scalingFactor);
 
   window.addEventListener('resize', () => updateScalingFactor(planets, stars, scalingFactor));
+  planetsEl.forEach(planetEl => {
+    planetEl.addEventListener('click', handlePlanetClick);
+  });
 });
 
 function getPlanetData() {
@@ -202,4 +207,8 @@ function updateScalingFactor(planets, stars, scalingFactor) {
     positionStar(star);
   });
 
+}
+
+function handlePlanetClick(event) {
+  event.target.classList.toggle('clicked');
 }

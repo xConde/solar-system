@@ -17,7 +17,6 @@
   }
 }
 
-
 @media (max-width: 768px) {
   :root {
     --earth-size: 1.5rem;
@@ -144,11 +143,31 @@ html, body {
   z-index: 5;
 }
 
+.planet:before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 400%;
+  height: 400%;
+  z-index: 1;
+}
+
+.planet:before.mars, .planet:before.earth {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 800%;
+  height: 800%;
+  z-index: 1;
+}
+
 .planet:hover {
   z-index: 15;
 }
 
-.planet:hover::before {
+.planet:hover::before, .planet.clicked::before {
   content: attr(data-label);
   position: absolute;
   width: 200%;
@@ -172,6 +191,7 @@ html, body {
   white-space: nowrap;
   text-align: center;
   pointer-events: none;
+  user-select: none;
   opacity: 0;
   transition: opacity 0.3s;
   background-color: rgba(0, 0, 0, 0.7);
@@ -182,7 +202,7 @@ html, body {
   margin-top: 5px;
 }
 
-.planet:hover .planet-label {
+.planet:hover > .planet-label, .planet.clicked > .planet-label {
   opacity: 1;
 }
 
@@ -347,6 +367,7 @@ html, body {
   position: absolute;
   background-color: #ffffff;
   border-radius: 50%;
+  transition: transform 1s ease;
   opacity: 0.8;
   z-index: 1;
 }
