@@ -1,22 +1,26 @@
+const domCache = {
+  planets: [],
+  moons: [],
+};
+
 document.addEventListener('DOMContentLoaded', function () {
   const planets = getPlanetData();
   const solarSystem = document.querySelector('.solar-system');
   createSun(solarSystem);
   const scalingFactor = calculateScalingFactor();
 
-  let planetsEl = [];
   planets.forEach(planet => {
     const planetEl = createPlanetElement(planet, solarSystem);
     positionPlanet(planet, planetEl, scalingFactor);
     createMoons(planet, planetEl, scalingFactor);
-    planetsEl.push(planetEl);
+    cachePlanet(planetEl);
   });
 
   let stars = spawnStars(solarSystem, 100);
   updateScalingFactor(planets, stars, scalingFactor);
 
   window.addEventListener('resize', debounce(() => updateScalingFactor(planets, stars, scalingFactor), 200));
-  planetsEl.forEach(planetEl => {
+  domCache.planets.forEach(planetEl => {
     planetEl.addEventListener('click', handlePlanetClick);
   });
 });
@@ -121,6 +125,7 @@ function createMoons(planet, planetEl, scalingFactor) {
     planetEl.appendChild(moonEl);
     moonEl.style.setProperty('--distance', moon.distance / (scalingFactor * 2) + 'em');
     moonEl.style.opacity = 1;
+    cacheMoon(moon, moonEl);
   });
   planetEl.style.opacity = 1;
 }
@@ -188,8 +193,8 @@ function positionPlanet(planet, planetEl, scalingFactor) {
 
 function updateScalingFactor(planets, stars, scalingFactor) {
   const newScalingFactor = calculateScalingFactor();
-  planets.forEach(planet => {
-    const planetEl = document.querySelector(`.planet.${planet.name}`);
+  planets.forEach((planet, index) => {
+    const planetEl = domCache.planets[index];
     const { x, y } = calculateApproximateDistance(planet, newScalingFactor);
     planetEl.style.transform = `translate(${x}em, ${y}em)`;
 
@@ -198,7 +203,7 @@ function updateScalingFactor(planets, stars, scalingFactor) {
     planetEl.style.animationDuration = `${adjustedOrbitalPeriod}s`;
 
     planet.moons.forEach(moon => {
-      const moonEl = document.querySelector(`.moon.moon-${moon.name}`);
+      const moonEl = domCache.moons[moon.name];
       moonEl.style.setProperty('--distance', moon.distance / (newScalingFactor * 2) + 'em');
     });
   });
@@ -223,4 +228,14 @@ function debounce(func, wait) {
       func.apply(context, args);
     }, wait);
   };
+}
+
+function cacheMoon(moon, moonEl) {
+  if (!domCache.moons[moon.name]) {
+    domCache.moons[moon.name] = moonEl;
+  }
+}
+
+function cachePlanet(planetEl) {
+  domCache.planets.push(planetEl);
 }
