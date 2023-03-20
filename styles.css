@@ -164,9 +164,18 @@ html, body {
   z-index: 1;
 }
 
-.planet:before.mars, .planet:before.earth {
+.planet.mars::before, .planet.earth::before, .planet.venus::before {
+  top: -150%;
+  left: -150%;
   width: 400%;
   height: 400%;
+}
+
+.planet.mercury::before {
+  top: -350%;
+  left: -350%;
+  width: 800%;
+  height: 800%;
 }
 
 .planet:hover {
@@ -207,6 +216,24 @@ html, body {
 .moon {
   background-color: #ccc;
   z-index: 4;
+}
+
+.mercury {
+  background-color: #c8c8c8;
+  width: calc(var(--earth-size) * 0.383);
+  height: calc(var(--earth-size) * 0.383);
+  --distance: 4rem;
+  --duration: 88s;
+  --rotation: 320deg;
+}
+
+.venus {
+  background-color: #f1c40f;
+  width: calc(var(--earth-size) * 0.949);
+  height: calc(var(--earth-size) * 0.949);
+  --distance: 7rem;
+  --duration: 225s;
+  --rotation: 10deg;
 }
 
 .earth {

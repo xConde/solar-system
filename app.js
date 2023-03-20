@@ -4,6 +4,18 @@ let checkScheduled = false;
 function getPlanetData() {
   return [
     {
+      name: 'mercury',
+      distance: 0.39,
+      orbitalPeriod: 87.97,
+      moons: [],
+    },
+    {
+      name: 'venus',
+      distance: 0.72,
+      orbitalPeriod: 224.7,
+      moons: [],
+    },
+    {
       name: 'earth',
       distance: 1,
       orbitalPeriod: 365.25,
