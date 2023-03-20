@@ -78,6 +78,18 @@
   }
 }
 
+@keyframes twinkling {
+  0% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.7;
+  }
+}
+
 html, body {
   font-family: 'Arial', sans-serif;
   display: flex;
@@ -370,4 +382,18 @@ html, body {
   transition: transform 1s ease;
   opacity: 0.8;
   z-index: 1;
+  animation: twinkling 1.5s infinite;
+  transition: opacity 0.25s ease-in-out;
+}
+
+.star:nth-of-type(1) {
+  animation-delay: 4s;
+}
+
+.star:nth-of-type(2) {
+  animation-delay: 2s;
+}
+
+.star:nth-of-type(3) {
+  animation-delay: 7s;
 }
