@@ -210,6 +210,22 @@ html, body {
   margin-top: 5px;
 }
 
+.rotation-counter {
+  position: absolute;
+  top: -15px;
+  left: -15px;
+  width: 30px;
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0);
+  border-radius: 50%;
+  text-align: center;
+  line-height: 30px;
+  font-size: 12px;
+  font-weight: bold;
+  pointer-events: none;
+  user-select: none;
+}
+
 .planet:hover > .planet-label, .planet.clicked > .planet-label {
   opacity: 1;
 }

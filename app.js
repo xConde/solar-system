@@ -93,15 +93,29 @@ function getSunRadius() {
   }
 }
 
-function createPlanet(planet, parentElement) {
+function createPlanet(planet, solarSystem) {
   const planetEl = document.createElement('div');
   planetEl.classList.add('planet', planet.name);
-  parentElement.appendChild(planetEl);
+  solarSystem.appendChild(planetEl);
 
   const label = document.createElement('div');
   label.classList.add('planet-label');
   label.innerText = planet.name;
   planetEl.appendChild(label);
+
+  const rotationCounterEl = document.createElement('div');
+  rotationCounterEl.classList.add('rotation-counter');
+  const planetSize = parseFloat(getComputedStyle(planetEl).getPropertyValue(`--${planet.name}-size`));
+  const counterSize = Math.max(Math.min(planetSize * 0.2, 16), 12);
+  rotationCounterEl.style.fontSize = `${counterSize}px`;
+  rotationCounterEl.innerText = '';
+  planetEl.appendChild(rotationCounterEl);
+
+  planetEl.addEventListener('click', handlePlanetClick);
+  planetEl.addEventListener('animationiteration', () => {
+    const currentValue = parseInt(rotationCounterEl.innerText) || 0;
+    rotationCounterEl.innerText = currentValue + 1;
+  });
 
   return planetEl;
 }
@@ -183,12 +197,12 @@ function positionElement(object, element, newScalingFactor, scaleFactor = 1) {
 
 function applyScalingAndReposition(planets, stars, scaleFactor) {
   const newScalingFactor = calculateScalingFactor();
+  const speedFactor = 500;
 
   planets.forEach((planet, index) => {
     const planetEl = domCache.planets[index];
     positionElement(planet, planetEl, newScalingFactor, scaleFactor);
 
-    const speedFactor = 500;
     const adjustedOrbitalPeriod = planet.orbitalPeriod / speedFactor * newScalingFactor;
     planetEl.style.animationDuration = `${adjustedOrbitalPeriod}s`;
 
@@ -293,10 +307,4 @@ document.addEventListener('DOMContentLoaded', function () {
     applyScalingAndReposition(planets, stars, resizeScalingFactor);
     scheduleCheck(planets, stars, resizeScalingFactor);
   }, 200));
-  domCache.planets.forEach(planetEl => {
-    planetEl.addEventListener('click', handlePlanetClick);
-    planetEl.addEventListener('orbitCompleted', throttle(() => {
-      scheduleCheck(planets, stars, scalingFactor);
-    }, 200));
-  });
 });
