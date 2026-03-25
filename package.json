@@ -1,0 +1,13 @@
+{
+  "name": "solar-system",
+  "version": "1.0.0",
+  "description": "Interactive solar system visualization built with vanilla JavaScript and CSS",
+  "main": "app.js",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": ["solar-system", "visualization", "javascript", "css", "astronomy"],
+  "author": "",
+  "license": "MIT",
+  "private": true
+}
