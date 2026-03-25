@@ -1,8 +1,8 @@
-import { positionStar } from './scaling.js';
+import { positionStar } from './scaling.ts';
 
 export { positionStar };
 
-export function createStar() {
+export function createStar(): HTMLDivElement {
   const star = document.createElement('div');
   star.classList.add('star');
 
@@ -18,8 +18,8 @@ export function createStar() {
   return star;
 }
 
-export function spawnStars(parentElement, numberOfStars) {
-  const stars = [];
+export function spawnStars(parentElement: HTMLElement, numberOfStars: number): HTMLDivElement[] {
+  const stars: HTMLDivElement[] = [];
   for (let i = 0; i < numberOfStars; i++) {
     const star = createStar();
     parentElement.appendChild(star);

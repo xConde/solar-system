@@ -1,8 +1,10 @@
-import { domCache, checkScheduled, setCheckScheduled } from './state.js';
+import { domCache, checkScheduled, setCheckScheduled } from './state.ts';
+import type { Planet, Moon, Position } from './types.ts';
 
-export function updateResponsiveProperties() {
+export function updateResponsiveProperties(): void {
   const width = window.innerWidth;
-  let earthSize, sunSize;
+  let earthSize: number;
+  let sunSize: number;
 
   if (width <= 480) {
     earthSize = 0.75;
@@ -25,17 +27,18 @@ export function updateResponsiveProperties() {
   document.documentElement.style.setProperty('--sun-size', sunSize + 'rem');
 }
 
-export function getSunRadius() {
+export function getSunRadius(): number {
   const sunSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sun-size'));
   const fontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
   return (sunSize * fontSize) / 2;
 }
 
-export function positionStar(star) {
+export function positionStar(star: HTMLDivElement): void {
   const safeZoneMargin = 1.15;
   const sunRadiusX = (getSunRadius() / window.innerWidth) * 100 * safeZoneMargin;
   const sunRadiusY = (getSunRadius() / window.innerHeight) * 100 * safeZoneMargin;
-  let x, y;
+  let x = 0;
+  let y = 0;
   let iterations = 0;
   const MAX_ITERATIONS = 100;
   do {
@@ -51,31 +54,31 @@ export function positionStar(star) {
   star.style.top = `${y}vh`;
 }
 
-export function calculateScalingFactor() {
+export function calculateScalingFactor(): number {
   const minDimension = Math.min(window.innerWidth, window.innerHeight);
   return minDimension / 150;
 }
 
-export function calculateApproximateDistance(planet, scalingFactor) {
+export function calculateApproximateDistance(planet: Planet | Moon, scalingFactor: number): Position {
   const scaledDistance = planet.distance * scalingFactor;
-  const angle = planet.initialAngle;
+  const angle = planet.initialAngle ?? 0;
   const x = scaledDistance * Math.cos(angle);
   const y = scaledDistance * Math.sin(angle);
 
   return { x, y };
 }
 
-export function rotateElement(element) {
+export function rotateElement(element: HTMLElement): void {
   const randomRotation = Math.random() * 360;
   element.style.setProperty('--rotation', randomRotation + 'deg');
 }
 
-export function positionElement(object, element, newScalingFactor, scaleFactor = 1) {
+export function positionElement(object: Planet | Moon, element: HTMLElement, newScalingFactor: number, scaleFactor = 1): void {
   const { x, y } = calculateApproximateDistance(object, newScalingFactor);
   element.style.transform = `translate(${x}em, ${y}em) scale(${scaleFactor})`;
 }
 
-export function applyScalingAndReposition(planets, stars, scaleFactor, positionFactor = 1) {
+export function applyScalingAndReposition(planets: Planet[], stars: HTMLDivElement[], scaleFactor: number, positionFactor = 1): void {
   const newScalingFactor = calculateScalingFactor() * positionFactor;
   const speedFactor = 500;
 
@@ -99,21 +102,18 @@ export function applyScalingAndReposition(planets, stars, scaleFactor, positionF
   stars.forEach(star => positionStar(star));
 }
 
-export function throttle(func, wait) {
-  let lastCallTime;
-  let timeout;
+export function throttle<T extends (...args: unknown[]) => void>(func: T, wait: number): (...args: Parameters<T>) => void {
+  let lastCallTime: number | undefined;
+  let timeout: ReturnType<typeof setTimeout> | undefined;
 
-  return function () {
+  return function (...args: Parameters<T>) {
     const now = new Date().getTime();
-    const timeSinceLastCall = now - (lastCallTime || 0);
-
-    const context = this;
-    const args = arguments;
+    const timeSinceLastCall = now - (lastCallTime ?? 0);
 
     const later = () => {
       lastCallTime = now;
-      timeout = null;
-      func.apply(context, args);
+      timeout = undefined;
+      func(...args);
     };
 
     if (!timeout) {
@@ -126,8 +126,8 @@ export function throttle(func, wait) {
   };
 }
 
-export function planetsOffScreen(planets) {
-  const offScreenPlanets = [];
+export function planetsOffScreen(planets: HTMLDivElement[]): HTMLDivElement[] {
+  const offScreenPlanets: HTMLDivElement[] = [];
 
   planets.forEach(planet => {
     const rect = planet.getBoundingClientRect();
@@ -144,7 +144,7 @@ export function planetsOffScreen(planets) {
   return offScreenPlanets;
 }
 
-export function checkPlanetsOffScreen(planets, stars, scalingFactor, maxAttempts = 5) {
+export function checkPlanetsOffScreen(planets: Planet[], stars: HTMLDivElement[], scalingFactor: number, maxAttempts = 5): void {
   if (maxAttempts <= 0) return;
 
   const offScreenPlanets = planetsOffScreen(domCache.planets);
@@ -157,7 +157,7 @@ export function checkPlanetsOffScreen(planets, stars, scalingFactor, maxAttempts
   }
 }
 
-export function scheduleCheck(planets, stars, scalingFactor) {
+export function scheduleCheck(planets: Planet[], stars: HTMLDivElement[], scalingFactor: number): void {
   if (!checkScheduled) {
     setCheckScheduled(true);
     requestAnimationFrame(() => {

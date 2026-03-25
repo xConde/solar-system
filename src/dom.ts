@@ -1,16 +1,17 @@
-import { domCache } from './state.js';
+import { domCache } from './state.ts';
+import type { Planet, Moon } from './types.ts';
 
-export function createSun(parentElement) {
+export function createSun(parentElement: HTMLElement): void {
   const sunEl = document.createElement('div');
   sunEl.classList.add('sun');
   parentElement.appendChild(sunEl);
 }
 
-export function handlePlanetClick(event) {
-  event.currentTarget.classList.toggle('clicked');
+export function handlePlanetClick(event: Event): void {
+  (event.currentTarget as HTMLElement).classList.toggle('clicked');
 }
 
-export function createPlanet(planet, solarSystem) {
+export function createPlanet(planet: Planet, solarSystem: HTMLElement): HTMLDivElement {
   const planetEl = document.createElement('div');
   planetEl.classList.add('planet', planet.name);
   solarSystem.appendChild(planetEl);
@@ -39,14 +40,14 @@ export function createPlanet(planet, solarSystem) {
   planetEl.addEventListener('click', handlePlanetClick);
   planetEl.addEventListener('animationiteration', () => {
     const currentValue = parseInt(rotationCounterEl.innerText, 10) || 0;
-    rotationCounterEl.innerText = currentValue + 1;
+    rotationCounterEl.innerText = String(currentValue + 1);
   });
 
   return planetEl;
 }
 
-export function createMoons(planet, planetEl, scalingFactor) {
-  planet.moons.forEach(moon => {
+export function createMoons(planet: Planet, planetEl: HTMLDivElement, scalingFactor: number): void {
+  planet.moons.forEach((moon: Moon) => {
     const moonEl = document.createElement('div');
     moonEl.classList.add('moon', `moon-${moon.name}`);
     planetEl.appendChild(moonEl);
@@ -55,7 +56,7 @@ export function createMoons(planet, planetEl, scalingFactor) {
     moonEl.style.width = `calc(var(--luna-moon-size) * ${moon.sizeRatio})`;
     moonEl.style.height = `calc(var(--luna-moon-size) * ${moon.sizeRatio})`;
     domCache.moons[moon.name] = moonEl;
-    moonEl.style.opacity = 1;
+    moonEl.style.opacity = '1';
   });
-  planetEl.style.opacity = 1;
+  planetEl.style.opacity = '1';
 }

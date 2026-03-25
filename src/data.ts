@@ -1,4 +1,6 @@
-export function getPlanetData() {
+import type { Planet } from './types.ts';
+
+export function getPlanetData(): Planet[] {
   return [
     {
       name: 'mercury',

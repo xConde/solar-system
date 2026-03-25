@@ -1,7 +1,7 @@
 import './styles.css';
-import { getPlanetData } from './data.js';
-import { createSun, createPlanet, createMoons } from './dom.js';
-import { spawnStars } from './stars.js';
+import { getPlanetData } from './data.ts';
+import { createSun, createPlanet, createMoons } from './dom.ts';
+import { spawnStars } from './stars.ts';
 import {
   updateResponsiveProperties,
   calculateScalingFactor,
@@ -10,12 +10,12 @@ import {
   applyScalingAndReposition,
   scheduleCheck,
   throttle,
-} from './scaling.js';
-import { domCache } from './state.js';
+} from './scaling.ts';
+import { domCache } from './state.ts';
 
 document.addEventListener('DOMContentLoaded', function () {
   const planets = getPlanetData();
-  const solarSystem = document.querySelector('.solar-system');
+  const solarSystem = document.querySelector<HTMLDivElement>('.solar-system');
   if (!solarSystem) {
     console.error('Solar System: required .solar-system element not found in DOM.');
     return;

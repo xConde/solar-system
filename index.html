@@ -4,7 +4,8 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self';">
+        <!-- CSP is set via HTTP headers in production (see public/_headers for Cloudflare Pages).
+             A meta CSP here would block Vite's HMR inline scripts in dev and is less flexible than header-based CSP. -->
         <meta name="referrer" content="no-referrer">
         <meta name="description" content="Interactive solar system visualization with orbiting planets, moons, and stars">
         <meta name="theme-color" content="#000000">
@@ -15,6 +16,6 @@
     </head>
     <body>
         <div class="solar-system"></div>
-        <script type="module" src="/src/main.js"></script>
+        <script type="module" src="/src/main.ts"></script>
     </body>
 </html>
