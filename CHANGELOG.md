@@ -33,7 +33,6 @@ Complete rewrite and modernization of the solar system visualization.
 - Dwarf planets (Pluto with Charon, Ceres)
 - Kuiper Belt visual hint
 - Comet system (Halley, Hale-Bopp with elliptical orbits)
-- Ambient audio (Web Audio API)
 - Guided tour mode
 - Deep linking (#planet-name)
 - Logarithmic scale toggle
@@ -66,6 +65,25 @@ Complete rewrite and modernization of the solar system visualization.
 - Null safety throughout
 - Canvas dimension caps
 - localStorage error handling
-- AudioContext creation guards
 - Pointer capture cleanup
 - Animation frame leak prevention
+
+### Visual Overhaul (Post-Release)
+- Halved sun size and reduced corona glow to prevent inner planet overlap
+- Rebalanced all orbit distances for better viewport fit
+- Reduced planet sizes on desktop for cleaner proportions
+- Changed orbital animation from cubic-bezier "whoosh" to constant-velocity linear
+- Hidden rotation counters by default (show on hover/click only)
+- Tour properly closes when dismissing info panel (X or Escape)
+- Info panel uses visibility:hidden to prevent edge showing when closed
+- Removed all audio features (simplified UX)
+- Control buttons restyled as comfortable rectangles with visible borders
+- Tour button distinguished with sun-color accent
+- Star safe zone expanded to clear sun glow area
+- Orbit paths changed from dashed to subtle solid lines
+- Asteroid belt repositioned to rem-based coordinates matching planet orbits
+- Comets rescaled to match planet coordinate system
+- Saturn ring given glow for visibility
+- Dark theme forced as default (space should be black)
+- Mobile control bar wraps and compacts on small screens
+- Planet labels auto-capitalize names

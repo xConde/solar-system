@@ -5,12 +5,13 @@ test.describe('Solar System', () => {
     await page.goto('/');
     // Disable animations for consistent screenshots
     await page.addStyleTag({
-      content: '*, *::before, *::after { animation-duration: 0s !important; transition-duration: 0s !important; }',
+      content:
+        '*, *::before, *::after { animation-duration: 0s !important; transition-duration: 0s !important; }',
     });
   });
 
   test('page loads with title', async ({ page }) => {
-    await expect(page).toHaveTitle('Solar System');
+    await expect(page).toHaveTitle('Solar System v2');
   });
 
   test('sun is visible', async ({ page }) => {

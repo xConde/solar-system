@@ -18,8 +18,7 @@ An interactive solar system visualization built with TypeScript, CSS, and Canvas
 - **Keyboard accessible**: Full keyboard navigation, ARIA labels, screen reader support
 - **Reduced motion**: Respects prefers-reduced-motion preference
 - **PWA**: Installable, works offline via service worker
-- **Theme**: Dark/light toggle with system preference detection
-- **Ambient audio**: Web Audio API drone and per-planet tones (off by default)
+- **Theme**: Dark/navy toggle
 
 ## Tech Stack
 
@@ -28,7 +27,6 @@ An interactive solar system visualization built with TypeScript, CSS, and Canvas
 - CSS Layers and Nesting
 - Canvas API (stars, asteroids, comets)
 - Web Animations API (playback control)
-- Web Audio API (ambient sound)
 - Vitest (unit tests)
 - Playwright (E2E tests)
 - ESLint + Prettier
@@ -66,7 +64,6 @@ src/
   viewport.ts      # Zoom and pan
   tour.ts          # Guided tour
   router.ts        # Hash-based deep linking
-  audio.ts         # Web Audio ambient sound
   settings.ts      # Theme and preferences
   scale-mode.ts    # Stylized/logarithmic toggle
   performance.ts   # Web Vitals monitoring

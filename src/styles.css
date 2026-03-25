@@ -656,17 +656,35 @@
 
 @media (max-width: 480px) {
   .control-bar {
-    gap: 8px;
-    padding: 6px 12px;
-    border-radius: 20px;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 16px;
+    flex-wrap: wrap;
+    max-width: 90vw;
+    justify-content: center;
+  }
+
+  .control-btn {
+    font-size: 0.65rem;
+    padding: 4px 8px;
+  }
+
+  .control-btn--icon {
+    min-width: 30px;
+    min-height: 30px;
+    font-size: 0.9rem;
   }
 
   .control-slider {
-    width: 80px;
+    width: 60px;
   }
 
   .control-speed-label {
-    font-size: 0.7rem;
+    font-size: 0.6rem;
+  }
+
+  .control-separator {
+    display: none;
   }
 }
 
