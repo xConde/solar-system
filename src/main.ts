@@ -1,6 +1,7 @@
 import './styles.css';
 import { getPlanetData } from './data.ts';
-import { createSun, createPlanet, createMoons } from './dom.ts';
+import { createSun, createPlanet, createMoons, createOrbitPath } from './dom.ts';
+import { createInfoPanel, showInfoPanel } from './panel.ts';
 import { spawnStars } from './stars.ts';
 import {
   updateResponsiveProperties,
@@ -29,10 +30,13 @@ document.addEventListener('DOMContentLoaded', function () {
   solarSystem.appendChild(liveRegion);
 
   const scalingFactor = calculateScalingFactor();
+  const infoPanel = createInfoPanel();
+  solarSystem.appendChild(infoPanel);
 
   updateResponsiveProperties();
   createSun(solarSystem);
   planets.forEach((planet) => {
+    createOrbitPath(planet, solarSystem);
     const planetEl = createPlanet(planet, solarSystem);
     positionElement(planet, planetEl, scalingFactor);
     rotateElement(planetEl);
@@ -42,6 +46,9 @@ document.addEventListener('DOMContentLoaded', function () {
       ring.classList.add('saturn-ring');
       planetEl.appendChild(ring);
     }
+    planetEl.addEventListener('click', () => {
+      showInfoPanel(infoPanel, planet);
+    });
     domCache.planets.push(planetEl);
   });
 

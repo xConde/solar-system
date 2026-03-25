@@ -20,7 +20,8 @@ export function createStar(): HTMLDivElement {
 
 export function spawnStars(parentElement: HTMLElement, numberOfStars: number): HTMLDivElement[] {
   const stars: HTMLDivElement[] = [];
-  for (let i = 0; i < numberOfStars; i++) {
+  const safeCount = Math.min(numberOfStars, 500);
+  for (let i = 0; i < safeCount; i++) {
     const star = createStar();
     parentElement.appendChild(star);
     stars.push(star);

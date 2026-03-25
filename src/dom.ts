@@ -1,6 +1,26 @@
 import { domCache } from './state.ts';
 import type { Planet, Moon } from './types.ts';
 
+export function createOrbitPath(planet: Planet, solarSystem: HTMLElement): HTMLDivElement {
+  const orbit = document.createElement('div');
+  orbit.classList.add('orbit-path');
+
+  const tempEl = document.createElement('div');
+  tempEl.classList.add('planet', planet.name);
+  solarSystem.appendChild(tempEl);
+  const distance = getComputedStyle(tempEl).getPropertyValue('--distance').trim();
+  solarSystem.removeChild(tempEl);
+
+  const distanceValue = parseFloat(distance);
+  const unit = distance.replace(/[\d.]/g, '');
+
+  orbit.style.width = `${distanceValue * 2}${unit}`;
+  orbit.style.height = `${distanceValue * 2}${unit}`;
+
+  solarSystem.appendChild(orbit);
+  return orbit;
+}
+
 export function createSun(parentElement: HTMLElement): void {
   const sunEl = document.createElement('div');
   sunEl.classList.add('sun');
@@ -47,13 +67,22 @@ export function createPlanet(planet: Planet, solarSystem: HTMLElement): HTMLDivE
       planetEl.classList.toggle('clicked');
     }
   });
+  // Tracks the last time an announcement was made for this planet.
+  // Prevents aria-live spam on fast-orbiting planets like Mercury.
+  const ANNOUNCE_MIN_INTERVAL_MS = 5000;
+  let lastAnnouncedAt = 0;
+
   planetEl.addEventListener('animationiteration', () => {
     const currentValue = parseInt(rotationCounterEl.innerText, 10) || 0;
     const newValue = currentValue + 1;
     rotationCounterEl.innerText = String(newValue);
-    const announcer = document.getElementById('rotation-announcer');
-    if (announcer) {
-      announcer.textContent = `${planet.name} completed orbit ${newValue}`;
+    const now = Date.now();
+    if (now - lastAnnouncedAt >= ANNOUNCE_MIN_INTERVAL_MS) {
+      const announcer = document.getElementById('rotation-announcer');
+      if (announcer) {
+        announcer.textContent = `${planet.name} completed orbit ${newValue}`;
+        lastAnnouncedAt = now;
+      }
     }
   });
 

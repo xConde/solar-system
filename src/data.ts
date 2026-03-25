@@ -10,6 +10,13 @@ export function getPlanetData(): Planet[] {
       orbitalPeriod: 87.97,
       moons: [],
       initialAngle: Math.random() * 2 * Math.PI,
+      info: {
+        diameter: '4,879 km',
+        distanceFromSun: '57.9 million km',
+        orbitalPeriod: '88 days',
+        numberOfMoons: 0,
+        funFact: 'A day on Mercury is longer than its year.',
+      },
     },
     {
       name: 'venus',
@@ -19,6 +26,13 @@ export function getPlanetData(): Planet[] {
       orbitalPeriod: 224.7,
       moons: [],
       initialAngle: Math.random() * 2 * Math.PI,
+      info: {
+        diameter: '12,104 km',
+        distanceFromSun: '108.2 million km',
+        orbitalPeriod: '225 days',
+        numberOfMoons: 0,
+        funFact: 'Venus rotates backwards compared to most planets.',
+      },
     },
     {
       name: 'earth',
@@ -28,6 +42,13 @@ export function getPlanetData(): Planet[] {
       orbitalPeriod: 365.25,
       moons: [{ name: 'luna', distance: 30, color: '#ccc', sizeRatio: 1 }],
       initialAngle: Math.random() * 2 * Math.PI,
+      info: {
+        diameter: '12,756 km',
+        distanceFromSun: '149.6 million km',
+        orbitalPeriod: '365.25 days',
+        numberOfMoons: 1,
+        funFact: 'Earth is the only known planet to support life.',
+      },
     },
     {
       name: 'mars',
@@ -40,6 +61,13 @@ export function getPlanetData(): Planet[] {
         { name: 'deimos', distance: 7, color: '#ccc', sizeRatio: 0.5 },
       ],
       initialAngle: Math.random() * 2 * Math.PI,
+      info: {
+        diameter: '6,792 km',
+        distanceFromSun: '227.9 million km',
+        orbitalPeriod: '687 days',
+        numberOfMoons: 2,
+        funFact: 'Mars has the tallest volcano in the solar system: Olympus Mons.',
+      },
     },
     {
       name: 'jupiter',
@@ -54,6 +82,13 @@ export function getPlanetData(): Planet[] {
         { name: 'callisto', distance: 26.3, color: '#ccc', sizeRatio: 0.666 },
       ],
       initialAngle: Math.random() * 2 * Math.PI,
+      info: {
+        diameter: '142,984 km',
+        distanceFromSun: '778.6 million km',
+        orbitalPeriod: '4,333 days',
+        numberOfMoons: 95,
+        funFact: "Jupiter's Great Red Spot is a storm larger than Earth.",
+      },
     },
     {
       name: 'saturn',
@@ -63,6 +98,13 @@ export function getPlanetData(): Planet[] {
       orbitalPeriod: 10759.22,
       moons: [{ name: 'titan', distance: 20.6, color: '#ccc', sizeRatio: 1.333 }],
       initialAngle: Math.random() * 2 * Math.PI,
+      info: {
+        diameter: '120,536 km',
+        distanceFromSun: '1.43 billion km',
+        orbitalPeriod: '10,759 days',
+        numberOfMoons: 146,
+        funFact: "Saturn's rings are mostly made of ice particles.",
+      },
     },
     {
       name: 'uranus',
@@ -75,6 +117,13 @@ export function getPlanetData(): Planet[] {
         { name: 'oberon', distance: 30.4, color: '#ccc', sizeRatio: 1 },
       ],
       initialAngle: Math.random() * 2 * Math.PI,
+      info: {
+        diameter: '51,118 km',
+        distanceFromSun: '2.87 billion km',
+        orbitalPeriod: '30,687 days',
+        numberOfMoons: 28,
+        funFact: 'Uranus rotates on its side with an axial tilt of 98 degrees.',
+      },
     },
     {
       name: 'neptune',
@@ -84,6 +133,13 @@ export function getPlanetData(): Planet[] {
       orbitalPeriod: 60182,
       moons: [{ name: 'triton', distance: 14.4, color: '#ccc', sizeRatio: 1 }],
       initialAngle: Math.random() * 2 * Math.PI,
+      info: {
+        diameter: '49,528 km',
+        distanceFromSun: '4.5 billion km',
+        orbitalPeriod: '60,190 days',
+        numberOfMoons: 16,
+        funFact: 'Neptune has the strongest winds in the solar system, up to 2,100 km/h.',
+      },
     },
   ];
 }
