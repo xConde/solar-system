@@ -3,6 +3,7 @@ import { getPlanetData } from './data.ts';
 import { createSun, createPlanet, createMoons, createOrbitPath } from './dom.ts';
 import { createInfoPanel, showInfoPanel } from './panel.ts';
 import { initStarfield, handleStarfieldResize, pauseStarfield, resumeStarfield } from './stars.ts';
+import { initAsteroidBelt, handleAsteroidResize, pauseAsteroids, resumeAsteroids } from './asteroids.ts';
 import {
   updateResponsiveProperties,
   calculateScalingFactor,
@@ -14,6 +15,7 @@ import {
 } from './scaling.ts';
 import { domCache } from './state.ts';
 import { createControlBar, initKeyboardShortcuts } from './controls.ts';
+import { initViewport, resetViewport, zoomToElement, getScale } from './viewport.ts';
 
 document.addEventListener('DOMContentLoaded', function () {
   const planets = getPlanetData();
@@ -50,24 +52,44 @@ document.addEventListener('DOMContentLoaded', function () {
     planetEl.addEventListener('click', () => {
       showInfoPanel(infoPanel, planet);
     });
+    planetEl.addEventListener('dblclick', () => {
+      zoomToElement(solarSystem, planetEl);
+    });
     domCache.planets.push(planetEl);
   });
 
+  initViewport(solarSystem);
+
   const controlBar = createControlBar();
+
+  const resetBtn = document.createElement('button');
+  resetBtn.classList.add('control-btn', 'control-btn--reset');
+  resetBtn.textContent = '\u21BA'; // reset icon
+  resetBtn.setAttribute('aria-label', 'Reset view');
+  resetBtn.addEventListener('click', () => resetViewport(solarSystem));
+  controlBar.insertBefore(resetBtn, controlBar.firstChild);
+
   document.body.appendChild(controlBar);
   initKeyboardShortcuts();
 
   const starCount = window.innerWidth <= 768 ? 50 : 100;
   initStarfield(solarSystem, starCount);
+  initAsteroidBelt(solarSystem, window.innerWidth <= 768 ? 150 : 300);
   applyScalingAndReposition(planets, scalingFactor);
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   if (reducedMotion.matches) {
     pauseStarfield();
+    pauseAsteroids();
   }
   reducedMotion.addEventListener('change', (e) => {
-    if (e.matches) pauseStarfield();
-    else resumeStarfield();
+    if (e.matches) {
+      pauseStarfield();
+      pauseAsteroids();
+    } else {
+      resumeStarfield();
+      resumeAsteroids();
+    }
   });
 
   const mediaQueries = [
@@ -80,8 +102,11 @@ document.addEventListener('DOMContentLoaded', function () {
     updateResponsiveProperties();
     const resizeScalingFactor = calculateScalingFactor();
     applyScalingAndReposition(planets, resizeScalingFactor);
-    scheduleCheck(planets, resizeScalingFactor);
+    if (getScale() === 1) {
+      scheduleCheck(planets, resizeScalingFactor);
+    }
     handleStarfieldResize();
+    handleAsteroidResize();
   }
 
   mediaQueries.forEach((mq) => mq.addEventListener('change', handleViewportChange));
