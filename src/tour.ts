@@ -91,14 +91,16 @@ function goToStep(step: number): void {
     progress.style.width = `${((step + 1) / state.planets.length) * 100}%`;
   }
 
-  // Dim non-focused planets
+  // Dim non-focused planets, show label on focused one
   domCache.planets.forEach((el, i) => {
     if (i === step) {
       el.style.opacity = '1';
       el.classList.remove('tour-dimmed');
+      el.classList.add('clicked');
     } else {
       el.style.opacity = '0.2';
       el.classList.add('tour-dimmed');
+      el.classList.remove('clicked');
     }
   });
 
@@ -111,10 +113,11 @@ export function endTour(): void {
   if (!state.active) return;
   state.active = false;
 
-  // Restore planet opacities
+  // Restore planet opacities and remove tour state
   domCache.planets.forEach((el) => {
     el.style.opacity = '1';
     el.classList.remove('tour-dimmed');
+    el.classList.remove('clicked');
   });
 
   // Remove overlay

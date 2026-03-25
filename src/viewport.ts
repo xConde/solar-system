@@ -83,7 +83,7 @@ export function zoomToElement(container: HTMLElement, element: HTMLElement): voi
   const elementCenterY =
     elementRect.top + elementRect.height / 2 - containerRect.top - containerRect.height / 2;
 
-  scale = 2;
+  scale = 1.3;
   translateX = -elementCenterX * scale;
   translateY = -elementCenterY * scale;
 
