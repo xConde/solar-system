@@ -55,7 +55,7 @@ export function createControlBar(): HTMLDivElement {
 
   // Play/Pause button
   const playPauseBtn = document.createElement('button');
-  playPauseBtn.classList.add('control-btn', 'control-btn--play');
+  playPauseBtn.classList.add('control-btn', 'control-btn--icon', 'control-btn--play');
   playPauseBtn.setAttribute('aria-label', 'Pause animation');
   playPauseBtn.textContent = '\u23F8'; // pause icon
   playPauseBtn.addEventListener('click', () => {

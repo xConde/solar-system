@@ -159,7 +159,7 @@
     animation-iteration-count: infinite;
     transform: rotate(var(--rotation)) translateX(calc(-50% + var(--distance) em)) translateY(-50%);
     transform-style: preserve-3d;
-    animation-timing-function: cubic-bezier(0.3, 1, 0.4, 0.8);
+    animation-timing-function: linear;
     transition: transform 0.5s ease;
   }
 
@@ -526,10 +526,12 @@
   overflow-y: auto;
   color: var(--color-text);
   font-family: 'Arial', sans-serif;
+  visibility: hidden;
 }
 
 .info-panel--visible {
   right: 0;
+  visibility: visible;
 }
 
 .info-panel-close {
@@ -692,21 +694,34 @@
 
 .control-btn {
   background: none;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   color: var(--color-text);
   font-size: 0.75rem;
   cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 50%;
+  padding: 6px 14px;
+  border-radius: 6px;
   transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.control-btn--icon {
+  font-size: 1.1rem;
+  padding: 6px 10px;
+  min-width: 36px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .control-btn:hover {
   background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .control-btn--active {
   background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .control-slider {

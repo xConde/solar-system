@@ -1,4 +1,5 @@
 import type { Planet } from './types.ts';
+import { endTour, isTourActive } from './tour.ts';
 
 let currentPanel: HTMLDivElement | null = null;
 let currentPlanetName: string | null = null;
@@ -22,13 +23,23 @@ export function createInfoPanel(): HTMLDivElement {
   `;
 
   const closeBtn = panel.querySelector('.info-panel-close') as HTMLButtonElement;
-  closeBtn.addEventListener('click', () => hideInfoPanel());
+  closeBtn.addEventListener('click', () => {
+    hideInfoPanel();
+    if (isTourActive()) {
+      endTour();
+    }
+  });
 
   // Guard against duplicate global listeners if createInfoPanel is ever called
   // more than once (e.g. during tests or future refactors).
   if (!escapeListenerRegistered) {
     document.addEventListener('keydown', (e: KeyboardEvent) => {
-      if (e.key === 'Escape') hideInfoPanel();
+      if (e.key === 'Escape') {
+        hideInfoPanel();
+        if (isTourActive()) {
+          endTour();
+        }
+      }
     });
     escapeListenerRegistered = true;
   }

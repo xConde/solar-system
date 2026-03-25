@@ -11,7 +11,6 @@ import {
   resumeAsteroids,
 } from './asteroids.ts';
 import { initComets, handleCometResize, pauseComets, resumeComets } from './comets.ts';
-import { toggleAmbientAudio, playPlanetTone, getStoredAudioPreference } from './audio.ts';
 import {
   updateResponsiveProperties,
   calculateScalingFactor,
@@ -72,7 +71,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     planetEl.addEventListener('click', () => {
       showInfoPanel(infoPanel, planet);
-      playPlanetTone(planet.sizeRatio, planet.distance);
     });
     planetEl.addEventListener('dblclick', () => {
       zoomToElement(solarSystem, planetEl);
@@ -86,31 +84,11 @@ document.addEventListener('DOMContentLoaded', function () {
   const controlBar = createControlBar();
 
   const resetBtn = document.createElement('button');
-  resetBtn.classList.add('control-btn', 'control-btn--reset');
+  resetBtn.classList.add('control-btn', 'control-btn--icon', 'control-btn--reset');
   resetBtn.textContent = '\u21BA'; // reset icon
   resetBtn.setAttribute('aria-label', 'Reset view');
   resetBtn.addEventListener('click', () => resetViewport(solarSystem));
   controlBar.insertBefore(resetBtn, controlBar.firstChild);
-
-  const sep1 = document.createElement('div');
-  sep1.classList.add('control-separator');
-  controlBar.appendChild(sep1);
-
-  const audioBtn = document.createElement('button');
-  audioBtn.classList.add('control-btn', 'control-btn--audio');
-  audioBtn.textContent = 'Sound';
-  audioBtn.setAttribute('aria-label', 'Enable ambient audio');
-  // Reflect stored preference in button state (but do NOT auto-play — browsers block it)
-  if (getStoredAudioPreference()) {
-    audioBtn.classList.add('control-btn--active');
-    audioBtn.setAttribute('aria-label', 'Disable ambient audio');
-  }
-  audioBtn.addEventListener('click', () => {
-    const enabled = toggleAmbientAudio();
-    audioBtn.classList.toggle('control-btn--active', enabled);
-    audioBtn.setAttribute('aria-label', enabled ? 'Disable ambient audio' : 'Enable ambient audio');
-  });
-  controlBar.appendChild(audioBtn);
 
   const scaleBtn = document.createElement('button');
   scaleBtn.classList.add('control-btn', 'control-btn--scale');
