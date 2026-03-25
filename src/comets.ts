@@ -65,9 +65,14 @@ function drawComets(time: number): void {
       Math.sqrt(1 - comet.eccentricity) * Math.cos(E / 2)
     );
 
-    // Radius
+    // Radius (conic section formula)
+    // With e close to 1 the denominator (1 + e*cos(ν)) approaches 0 near aphelion
+    // (ν≈π), making r blow up. Clamp to 3× the semi-major axis so the comet
+    // stays on-screen and no NaN/Infinity propagates into canvas drawing calls.
     const a = comet.semiMajorAxis * minDim;
-    const r = a * (1 - comet.eccentricity * comet.eccentricity) / (1 + comet.eccentricity * Math.cos(trueAnomaly));
+    const denom = 1 + comet.eccentricity * Math.cos(trueAnomaly);
+    const rRaw = denom > 0 ? a * (1 - comet.eccentricity * comet.eccentricity) / denom : Infinity;
+    const r = Math.min(rRaw, a * 3);
 
     const x = centerX + r * Math.cos(trueAnomaly);
     const y = centerY + r * Math.sin(trueAnomaly);

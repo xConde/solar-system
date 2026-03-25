@@ -2,10 +2,17 @@ let audioContext: AudioContext | null = null;
 let isAudioEnabled = false;
 let ambientOscillator: OscillatorNode | null = null;
 let ambientGain: GainNode | null = null;
+// Track the stop-fade timeout so rapid toggles can cancel it
+let stopTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
-function ensureAudioContext(): AudioContext {
+function ensureAudioContext(): AudioContext | null {
   if (!audioContext) {
-    audioContext = new AudioContext();
+    try {
+      audioContext = new AudioContext();
+    } catch (e) {
+      console.warn('Web Audio API unavailable:', e);
+      return null;
+    }
   }
   return audioContext;
 }
@@ -19,13 +26,28 @@ export function toggleAmbientAudio(): boolean {
     stopAmbient();
   }
 
-  localStorage.setItem('solar-system-audio', isAudioEnabled ? 'on' : 'off');
+  try {
+    localStorage.setItem('solar-system-audio', isAudioEnabled ? 'on' : 'off');
+  } catch {
+    // Quota exceeded or storage blocked (e.g. Safari private browsing)
+  }
   return isAudioEnabled;
 }
 
+// Track LFO nodes so stopAmbient can disconnect them
+let ambientLfo: OscillatorNode | null = null;
+let ambientLfoGain: GainNode | null = null;
+
 function startAmbient(): void {
+  // Cancel any pending stop from a rapid toggle
+  if (stopTimeoutId !== null) {
+    clearTimeout(stopTimeoutId);
+    stopTimeoutId = null;
+  }
+
   const ctx = ensureAudioContext();
-  if (ctx.state === 'suspended') ctx.resume();
+  if (!ctx) return;
+  if (ctx.state === 'suspended') void ctx.resume();
 
   // Create a deep space drone using multiple oscillators
   ambientGain = ctx.createGain();
@@ -43,22 +65,45 @@ function startAmbient(): void {
   ambientOscillator.start();
 
   // Add subtle modulation
-  const lfo = ctx.createOscillator();
-  const lfoGain = ctx.createGain();
-  lfo.frequency.value = 0.1;
-  lfoGain.gain.value = 5;
-  lfo.connect(lfoGain);
-  lfoGain.connect(ambientOscillator.frequency);
-  lfo.start();
+  ambientLfo = ctx.createOscillator();
+  ambientLfoGain = ctx.createGain();
+  ambientLfo.frequency.value = 0.1;
+  ambientLfoGain.gain.value = 5;
+  ambientLfo.connect(ambientLfoGain);
+  ambientLfoGain.connect(ambientOscillator.frequency);
+  ambientLfo.start();
 }
 
 function stopAmbient(): void {
   if (ambientGain && audioContext) {
+    // Cancel any previously scheduled stop before scheduling a new one
+    if (stopTimeoutId !== null) {
+      clearTimeout(stopTimeoutId);
+      stopTimeoutId = null;
+    }
+    ambientGain.gain.cancelScheduledValues(audioContext.currentTime);
     ambientGain.gain.linearRampToValueAtTime(0, audioContext.currentTime + 1);
-    setTimeout(() => {
-      ambientOscillator?.stop();
-      ambientOscillator = null;
-      ambientGain = null;
+    const oscToStop = ambientOscillator;
+    const gainToStop = ambientGain;
+    const lfoToStop = ambientLfo;
+    const lfoGainToStop = ambientLfoGain;
+    // Clear references immediately so startAmbient() can create fresh nodes
+    ambientOscillator = null;
+    ambientGain = null;
+    ambientLfo = null;
+    ambientLfoGain = null;
+    stopTimeoutId = setTimeout(() => {
+      stopTimeoutId = null;
+      try {
+        lfoGainToStop?.disconnect();
+        lfoToStop?.stop();
+        lfoToStop?.disconnect();
+        gainToStop?.disconnect();
+        oscToStop?.stop();
+        oscToStop?.disconnect();
+      } catch {
+        // Nodes may already be stopped/disconnected
+      }
     }, 1100);
   }
 }
@@ -66,6 +111,7 @@ function stopAmbient(): void {
 export function playPlanetTone(sizeRatio: number, distance: number): void {
   if (!isAudioEnabled) return;
   const ctx = ensureAudioContext();
+  if (!ctx) return;
 
   // Map planet size to frequency (larger = lower)
   const freq = 220 / sizeRatio;
@@ -91,5 +137,9 @@ export function getIsAudioEnabled(): boolean {
 }
 
 export function getStoredAudioPreference(): boolean {
-  return localStorage.getItem('solar-system-audio') === 'on';
+  try {
+    return localStorage.getItem('solar-system-audio') === 'on';
+  } catch {
+    return false;
+  }
 }
