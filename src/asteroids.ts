@@ -15,9 +15,9 @@ let asteroids: Asteroid[] = [];
 function generateAsteroids(count: number): Asteroid[] {
   const result: Asteroid[] = [];
   const fontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
-  // Belt between Mars (15rem) and Jupiter (22rem)
-  const minDistRem = 16;
-  const maxDistRem = 20;
+  // Belt between Mars (13rem) and Jupiter (18rem)
+  const minDistRem = 14;
+  const maxDistRem = 17;
   const minDist = minDistRem * fontSize;
   const maxDist = maxDistRem * fontSize;
 
@@ -26,7 +26,7 @@ function generateAsteroids(count: number): Asteroid[] {
     result.push({
       angle: Math.random() * Math.PI * 2,
       distance: dist,
-      size: 0.3 + Math.random() * 1,
+      size: 0.2 + Math.random() * 0.8,
       speed: (0.01 + Math.random() * 0.03) * (Math.random() > 0.5 ? 1 : -1),
       opacity: 0.15 + Math.random() * 0.3,
     });

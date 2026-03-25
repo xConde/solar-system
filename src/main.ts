@@ -107,12 +107,12 @@ document.addEventListener('DOMContentLoaded', function () {
   // Theme toggle
   const themeBtn = document.createElement('button');
   themeBtn.classList.add('control-btn', 'control-btn--theme');
-  themeBtn.textContent = getSettings().theme === 'dark' ? 'Light' : 'Dark';
+  themeBtn.textContent = getSettings().theme === 'dark' ? 'Navy' : 'Black';
   themeBtn.setAttribute('aria-label', 'Toggle theme');
   themeBtn.addEventListener('click', () => {
     const newTheme = getSettings().theme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
-    themeBtn.textContent = newTheme === 'dark' ? 'Light' : 'Dark';
+    themeBtn.textContent = newTheme === 'dark' ? 'Navy' : 'Black';
   });
   controlBar.appendChild(themeBtn);
 

@@ -169,38 +169,38 @@
   }
 
   .mercury {
-    --distance: 6rem;
+    --distance: 5rem;
     --duration: 88s;
     --rotation: 320deg;
   }
 
   .venus {
-    --distance: 9rem;
+    --distance: 7.5rem;
     --duration: 225s;
     --rotation: 10deg;
   }
 
   .earth {
-    --distance: 12rem;
+    --distance: 10rem;
     --duration: 365s;
     --rotation: 40deg;
   }
 
   .mars {
-    --distance: 15rem;
+    --distance: 13rem;
     --duration: 687s;
     --rotation: 60deg;
   }
 
   .jupiter {
-    --distance: 22rem;
+    --distance: 18rem;
     --duration: 4300s;
     --rotation: 80deg;
   }
 
   .saturn {
     position: relative;
-    --distance: 28rem;
+    --distance: 22rem;
     --duration: 10750s;
     --rotation: 100deg;
   }
@@ -221,25 +221,25 @@
   }
 
   .uranus {
-    --distance: 34rem;
+    --distance: 26rem;
     --duration: 30600s;
     --rotation: 120deg;
   }
 
   .neptune {
-    --distance: 40rem;
+    --distance: 30rem;
     --duration: 60225s;
     --rotation: 140deg;
   }
 
   .ceres {
-    --distance: 17rem;
+    --distance: 14.5rem;
     --duration: 1682s;
     --rotation: 200deg;
   }
 
   .pluto {
-    --distance: 46rem;
+    --distance: 34rem;
     --duration: 90560s;
     --rotation: 180deg;
   }
@@ -253,8 +253,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 96rem;
-    height: 96rem;
+    width: 72rem;
+    height: 72rem;
     border: 2px dashed rgba(255, 255, 255, 0.03);
     border-radius: 50%;
     pointer-events: none;
@@ -266,7 +266,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border: 1px dashed rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.04);
     border-radius: 50%;
     pointer-events: none;
     z-index: 2;
@@ -464,6 +464,7 @@
     transform: translateX(-50%);
     font-size: 0.8rem;
     white-space: nowrap;
+    text-transform: capitalize;
     text-align: center;
     pointer-events: none;
     user-select: none;
@@ -683,6 +684,7 @@
   padding: 6px 14px;
   z-index: 50;
   backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
 .control-separator {
@@ -722,6 +724,15 @@
 .control-btn--active {
   background: rgba(255, 255, 255, 0.15);
   border-color: rgba(255, 255, 255, 0.3);
+}
+
+.control-btn--tour {
+  border-color: var(--color-sun);
+  color: var(--color-sun);
+}
+
+.control-btn--tour:hover {
+  background: rgba(243, 156, 18, 0.15);
 }
 
 .control-slider {

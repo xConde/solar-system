@@ -4,7 +4,7 @@ let animationId: number | null = null;
 
 interface Comet {
   name: string;
-  semiMajorAxis: number; // relative to viewport
+  semiMajorAxis: number; // rem
   eccentricity: number;
   periodSeconds: number;
   angle: number; // current angle
@@ -14,19 +14,19 @@ interface Comet {
 const COMETS: Comet[] = [
   {
     name: 'halley',
-    semiMajorAxis: 0.35,
+    semiMajorAxis: 30, // rem
     eccentricity: 0.967,
     periodSeconds: 120, // simulated period
     angle: 0,
-    tailLength: 30,
+    tailLength: 25,
   },
   {
     name: 'hale-bopp',
-    semiMajorAxis: 0.4,
+    semiMajorAxis: 35, // rem
     eccentricity: 0.995,
     periodSeconds: 200,
     angle: Math.PI * 0.7,
-    tailLength: 40,
+    tailLength: 30,
   },
 ];
 
@@ -49,8 +49,8 @@ function drawComets(time: number): void {
   const h = window.innerHeight;
   const centerX = w / 2;
   const centerY = h / 2;
-  const minDim = Math.min(w, h);
   const elapsed = time * 0.001;
+  const fontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -72,7 +72,7 @@ function drawComets(time: number): void {
     // With e close to 1 the denominator (1 + e*cos(ν)) approaches 0 near aphelion
     // (ν≈π), making r blow up. Clamp to 3× the semi-major axis so the comet
     // stays on-screen and no NaN/Infinity propagates into canvas drawing calls.
-    const a = comet.semiMajorAxis * minDim;
+    const a = comet.semiMajorAxis * fontSize;
     const denom = 1 + comet.eccentricity * Math.cos(trueAnomaly);
     const rRaw = denom > 0 ? (a * (1 - comet.eccentricity * comet.eccentricity)) / denom : Infinity;
     const r = Math.min(rRaw, a * 3);

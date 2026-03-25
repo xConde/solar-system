@@ -8,7 +8,7 @@ let currentMode: ScaleMode = 'stylized';
 // Logarithmic scale distances (more usable than true linear scale)
 // Maps AU to rem values using log scale
 function logDistance(au: number): number {
-  return 4 + Math.log2(au + 0.5) * 5;
+  return 5 + Math.log2(au + 0.5) * 4.5;
 }
 
 // Logarithmic size ratios (so inner planets don't vanish)

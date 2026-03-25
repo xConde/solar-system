@@ -43,11 +43,6 @@ function loadSettings(): Settings {
     // localStorage unavailable or JSON malformed
   }
 
-  // Respect system preference
-  if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-    defaults.theme = 'light';
-  }
-
   return defaults;
 }
 

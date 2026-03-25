@@ -13,10 +13,10 @@ export function updateResponsiveProperties(): void {
     earthSize = 1.5;
     sunSize = 3;
   } else if (width <= 1024) {
-    earthSize = 2;
+    earthSize = 1.6;
     sunSize = 4;
   } else {
-    earthSize = 2.3625;
+    earthSize = 1.8;
     sunSize = 5;
   }
 
