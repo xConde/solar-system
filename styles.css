@@ -196,59 +196,40 @@ html, body {
 }
 
 .moon {
-  background-color: #ccc;
   z-index: 4;
 }
 
 .mercury {
-  background-color: #c8c8c8;
-  width: calc(var(--earth-size) * 0.383);
-  height: calc(var(--earth-size) * 0.383);
   --distance: 4rem;
   --duration: 88s;
   --rotation: 320deg;
 }
 
 .venus {
-  background-color: #f1c40f;
-  width: calc(var(--earth-size) * 0.949);
-  height: calc(var(--earth-size) * 0.949);
   --distance: 7rem;
   --duration: 225s;
   --rotation: 10deg;
 }
 
 .earth {
-  background-color: #3498db;
-  width: var(--earth-size);
-  height: var(--earth-size);
   --distance: 10rem;
   --duration: 365s;
   --rotation: 40deg;
 }
 
 .mars {
-  background-color: #e74c3c;
-  width: calc(var(--earth-size) * 0.57);
-  height: calc(var(--earth-size) * 0.57);
   --distance: 12.5rem;
   --duration: 687s;
   --rotation: 60deg;
 }
 
 .jupiter {
-  background-color: #f1c40f;
-  width: calc(var(--earth-size) * 2);
-  height: calc(var(--earth-size) * 2);
   --distance: 15rem;
   --duration: 4300s;
   --rotation: 80deg;
 }
 
 .saturn {
-  background-color: #e67e22;
-  width: calc(var(--earth-size) * 1.714);
-  height: calc(var(--earth-size) * 1.714);
   position: relative;
   --distance: 17.5rem;
   --duration: 10750s;
@@ -270,18 +251,12 @@ html, body {
 }
 
 .uranus {
-  background-color: #5da6e1;
-  width: calc(var(--earth-size) * 1.556);
-  height: calc(var(--earth-size) * 1.556);
   --distance: 20rem;
   --duration: 30600s;
   --rotation: 120deg;
 }
 
 .neptune {
-  background-color: #4a6f8d;
-  width: calc(var(--earth-size) * 1.556);
-  height: calc(var(--earth-size) * 1.556);
   --distance: 22.5rem;
   --duration: 60225s;
   --rotation: 140deg;
@@ -289,20 +264,12 @@ html, body {
 
 /* Earth */
 .moon-luna {
-  width: var(--luna-moon-size);
-  height: var(--luna-moon-size);
   --distance: 1rem;
   --duration: 27s;
   --rotation: 0deg;
 }
 
 /* Mars */
-.moon-phobos,
-.moon-deimos {
-  width: calc(var(--luna-moon-size) * 0.5);
-  height: calc(var(--luna-moon-size) * 0.5);
-}
-
 .moon-phobos {
   --distance: 0.5rem;
   --duration: 8s;
@@ -316,14 +283,6 @@ html, body {
 }
 
 /* Jupiter */
-.moon-io,
-.moon-europa,
-.moon-ganymede,
-.moon-callisto {
-  width: calc(var(--luna-moon-size) * 0.666);
-  height: calc(var(--luna-moon-size) * 0.666);
-}
-
 .moon-io {
   --distance: 1.5rem;
   --duration: 42s;
@@ -350,20 +309,12 @@ html, body {
 
 /* Saturn */
 .moon-titan {
-  width: calc(var(--luna-moon-size) * 1.333);
-  height: calc(var(--luna-moon-size) * 1.333);
   --distance: 1.75rem;
   --duration: 382s;
   --rotation: 0deg;
 }
 
 /* Uranus */
-.moon-titania,
-.moon-oberon {
-  width: var(--luna-moon-size);
-  height: var(--luna-moon-size);
-}
-
 .moon-titania {
   --distance: 1.25rem;
   --duration: 42s;
@@ -378,8 +329,6 @@ html, body {
 
 /* Neptune */
 .moon-triton {
-  width: var(--luna-moon-size);
-  height: var(--luna-moon-size);
   --distance: 1.25rem;
   --duration: 141s;
   --rotation: 0deg;
