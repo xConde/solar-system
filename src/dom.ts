@@ -42,6 +42,41 @@ export function createPlanet(planet: Planet, solarSystem: HTMLElement): HTMLDivE
   planetEl.style.width = `calc(var(--earth-size) * ${planet.sizeRatio})`;
   planetEl.style.height = `calc(var(--earth-size) * ${planet.sizeRatio})`;
 
+  // Planet surface detail via gradients
+  const gradients: Record<string, string> = {
+    mercury: `radial-gradient(circle at 35% 35%, #d4d4d4, ${planet.color} 60%, #888 100%)`,
+    venus: `radial-gradient(circle at 35% 35%, #f7dc6f, ${planet.color} 60%, #c8a415 100%)`,
+    earth: `radial-gradient(circle at 35% 35%, #5dade2, ${planet.color} 40%, #1a5276 100%)`,
+    mars: `radial-gradient(circle at 35% 35%, #f1948a, ${planet.color} 60%, #922b21 100%)`,
+    jupiter: `repeating-linear-gradient(
+    0deg,
+    #f1c40f 0%, #d4a017 8%, #e8b30e 16%, #c8960f 24%, #f1c40f 32%
+  )`,
+    saturn: `repeating-linear-gradient(
+    0deg,
+    #e67e22 0%, #d4700a 10%, #e67e22 20%, #ca6f19 30%, #e67e22 40%
+  )`,
+    uranus: `radial-gradient(circle at 35% 35%, #85c1e9, ${planet.color} 60%, #2e86c1 100%)`,
+    neptune: `radial-gradient(circle at 35% 35%, #7fb3d3, ${planet.color} 60%, #2c3e50 100%)`,
+  };
+
+  if (gradients[planet.name]) {
+    planetEl.style.background = gradients[planet.name];
+  }
+
+  const glows: Record<string, string> = {
+    earth: '0 0 8px rgba(52, 152, 219, 0.6), 0 0 15px rgba(52, 152, 219, 0.3)',
+    mars: '0 0 6px rgba(231, 76, 60, 0.4)',
+    jupiter: '0 0 12px rgba(241, 196, 15, 0.3)',
+    saturn: '0 0 10px rgba(230, 126, 34, 0.3)',
+    neptune: '0 0 8px rgba(74, 111, 141, 0.5)',
+    uranus: '0 0 8px rgba(93, 166, 225, 0.4)',
+  };
+
+  if (glows[planet.name]) {
+    planetEl.style.boxShadow = glows[planet.name];
+  }
+
   const label = document.createElement('div');
   label.classList.add('planet-label');
   // Safe: planet.name comes from hardcoded getPlanetData(), never from user input.
