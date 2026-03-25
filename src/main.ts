@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const scalingFactor = calculateScalingFactor();
   const infoPanel = createInfoPanel();
-  solarSystem.appendChild(infoPanel);
+  document.body.appendChild(infoPanel);
 
   updateResponsiveProperties();
   createSun(solarSystem);
@@ -91,6 +91,10 @@ document.addEventListener('DOMContentLoaded', function () {
   resetBtn.setAttribute('aria-label', 'Reset view');
   resetBtn.addEventListener('click', () => resetViewport(solarSystem));
   controlBar.insertBefore(resetBtn, controlBar.firstChild);
+
+  const sep1 = document.createElement('div');
+  sep1.classList.add('control-separator');
+  controlBar.appendChild(sep1);
 
   const audioBtn = document.createElement('button');
   audioBtn.classList.add('control-btn', 'control-btn--audio');
@@ -147,6 +151,10 @@ document.addEventListener('DOMContentLoaded', function () {
     labelBtn.classList.toggle('control-btn--active', labelsOn);
   });
   controlBar.appendChild(labelBtn);
+
+  const sep2 = document.createElement('div');
+  sep2.classList.add('control-separator');
+  controlBar.appendChild(sep2);
 
   const tourBtn = document.createElement('button');
   tourBtn.classList.add('control-btn', 'control-btn--tour');

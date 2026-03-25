@@ -8,16 +8,16 @@ export function updateResponsiveProperties(): void {
 
   if (width <= 480) {
     earthSize = 0.75;
-    sunSize = 4;
+    sunSize = 2;
   } else if (width <= 768) {
     earthSize = 1.5;
-    sunSize = 6;
+    sunSize = 3;
   } else if (width <= 1024) {
     earthSize = 2;
-    sunSize = 8;
+    sunSize = 4;
   } else {
     earthSize = 2.3625;
-    sunSize = 10;
+    sunSize = 5;
   }
 
   const moonSize = earthSize * 0.285;

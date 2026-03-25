@@ -5,7 +5,7 @@
   --color-text: #fff;
   --earth-size: 2.3625rem;
   --luna-moon-size: 0.675rem;
-  --sun-size: 10rem;
+  --sun-size: 5rem;
 }
 
 [data-theme='light'] {
@@ -125,18 +125,18 @@
     animation-iteration-count: infinite, infinite;
     animation-timing-function: linear, ease-in-out;
     box-shadow:
+      0 0 10px var(--color-sun),
       0 0 20px var(--color-sun),
-      0 0 40px var(--color-sun),
-      0 0 80px rgba(243, 156, 18, 0.5),
-      0 0 120px rgba(243, 156, 18, 0.3);
+      0 0 40px rgba(243, 156, 18, 0.4),
+      0 0 60px rgba(243, 156, 18, 0.2);
 
     &::before {
       content: '';
       position: absolute;
-      width: 200%;
-      height: 200%;
-      top: -50%;
-      left: -50%;
+      width: 150%;
+      height: 150%;
+      top: -25%;
+      left: -25%;
       border-radius: 50%;
       background: radial-gradient(
         circle,
@@ -169,38 +169,38 @@
   }
 
   .mercury {
-    --distance: 4rem;
+    --distance: 6rem;
     --duration: 88s;
     --rotation: 320deg;
   }
 
   .venus {
-    --distance: 7rem;
+    --distance: 9rem;
     --duration: 225s;
     --rotation: 10deg;
   }
 
   .earth {
-    --distance: 10rem;
+    --distance: 12rem;
     --duration: 365s;
     --rotation: 40deg;
   }
 
   .mars {
-    --distance: 12.5rem;
+    --distance: 15rem;
     --duration: 687s;
     --rotation: 60deg;
   }
 
   .jupiter {
-    --distance: 15rem;
+    --distance: 22rem;
     --duration: 4300s;
     --rotation: 80deg;
   }
 
   .saturn {
     position: relative;
-    --distance: 17.5rem;
+    --distance: 28rem;
     --duration: 10750s;
     --rotation: 100deg;
   }
@@ -210,7 +210,8 @@
     width: 150%;
     height: 30%;
     border-radius: 50%;
-    border: 2px solid #f1c40f;
+    border: 1px solid rgba(241, 196, 15, 0.7);
+    box-shadow: 0 0 3px rgba(241, 196, 15, 0.3);
     box-sizing: border-box;
     transform: rotate(-30deg) scale(1.2);
     top: 40%;
@@ -220,25 +221,25 @@
   }
 
   .uranus {
-    --distance: 20rem;
+    --distance: 34rem;
     --duration: 30600s;
     --rotation: 120deg;
   }
 
   .neptune {
-    --distance: 22.5rem;
+    --distance: 40rem;
     --duration: 60225s;
     --rotation: 140deg;
   }
 
   .ceres {
-    --distance: 13.5rem;
+    --distance: 17rem;
     --duration: 1682s;
     --rotation: 200deg;
   }
 
   .pluto {
-    --distance: 25rem;
+    --distance: 46rem;
     --duration: 90560s;
     --rotation: 180deg;
   }
@@ -252,8 +253,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 56rem;
-    height: 56rem;
+    width: 96rem;
+    height: 96rem;
     border: 2px dashed rgba(255, 255, 255, 0.03);
     border-radius: 50%;
     pointer-events: none;
@@ -265,7 +266,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border: 1px dashed rgba(255, 255, 255, 0.1);
+    border: 1px dashed rgba(255, 255, 255, 0.06);
     border-radius: 50%;
     pointer-events: none;
     z-index: 2;
@@ -482,18 +483,32 @@
 
   .rotation-counter {
     position: absolute;
-    top: -15px;
-    left: -15px;
-    width: 30px;
-    height: 30px;
-    background-color: rgba(255, 255, 255, 0);
-    border-radius: 50%;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
     text-align: center;
-    line-height: 30px;
-    font-size: 12px;
+    font-size: 9px;
     font-weight: bold;
     pointer-events: none;
     user-select: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    padding: 1px 4px;
+    line-height: normal;
+  }
+
+  .planet:hover > .rotation-counter,
+  .planet.clicked > .rotation-counter {
+    opacity: 0.6;
+  }
+
+  .tour-dimmed > .planet-label,
+  .tour-dimmed > .rotation-counter {
+    opacity: 0 !important;
   }
 }
 
@@ -659,20 +674,27 @@
   transform: translateX(-50%);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 6px;
   background: rgba(10, 10, 30, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 30px;
-  padding: 8px 20px;
+  padding: 6px 14px;
   z-index: 50;
   backdrop-filter: blur(10px);
+}
+
+.control-separator {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 0 2px;
 }
 
 .control-btn {
   background: none;
   border: none;
   color: var(--color-text);
-  font-size: 1.2rem;
+  font-size: 0.75rem;
   cursor: pointer;
   padding: 4px 8px;
   border-radius: 50%;

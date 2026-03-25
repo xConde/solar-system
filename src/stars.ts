@@ -15,7 +15,7 @@ let stars: Star[] = [];
 let animationId: number | null = null;
 
 function generateStars(count: number): Star[] {
-  const safeZoneMargin = 1.15;
+  const safeZoneMargin = 2.5;
   const sunRadiusX = (getSunRadius() / window.innerWidth) * safeZoneMargin;
   const sunRadiusY = (getSunRadius() / window.innerHeight) * safeZoneMargin;
 

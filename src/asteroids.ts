@@ -4,7 +4,7 @@ let animationId: number | null = null;
 
 interface Asteroid {
   angle: number;
-  distance: number; // distance from center as fraction of container size
+  distance: number; // distance from center in pixels
   size: number;
   speed: number; // radians per second
   opacity: number;
@@ -14,19 +14,21 @@ let asteroids: Asteroid[] = [];
 
 function generateAsteroids(count: number): Asteroid[] {
   const result: Asteroid[] = [];
-  // Asteroid belt sits between Mars (~12.5rem orbit) and Jupiter (~15rem orbit)
-  // In relative terms, between ~0.14 and ~0.17 of the viewport min dimension
-  // We'll use a range that visually sits between the two
-  const minDist = 0.135;
-  const maxDist = 0.165;
+  const fontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+  // Belt between Mars (15rem) and Jupiter (22rem)
+  const minDistRem = 16;
+  const maxDistRem = 20;
+  const minDist = minDistRem * fontSize;
+  const maxDist = maxDistRem * fontSize;
 
   for (let i = 0; i < count; i++) {
+    const dist = minDist + Math.random() * (maxDist - minDist);
     result.push({
       angle: Math.random() * Math.PI * 2,
-      distance: minDist + Math.random() * (maxDist - minDist),
-      size: 0.5 + Math.random() * 1.5,
-      speed: (0.02 + Math.random() * 0.05) * (Math.random() > 0.5 ? 1 : -1),
-      opacity: 0.2 + Math.random() * 0.4,
+      distance: dist,
+      size: 0.3 + Math.random() * 1,
+      speed: (0.01 + Math.random() * 0.03) * (Math.random() > 0.5 ? 1 : -1),
+      opacity: 0.15 + Math.random() * 0.3,
     });
   }
   return result;
@@ -51,7 +53,6 @@ function drawAsteroids(time: number): void {
   const h = window.innerHeight;
   const centerX = w / 2;
   const centerY = h / 2;
-  const minDim = Math.min(w, h);
 
   context.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -59,7 +60,7 @@ function drawAsteroids(time: number): void {
 
   asteroids.forEach((asteroid) => {
     const currentAngle = asteroid.angle + elapsed * asteroid.speed;
-    const radius = asteroid.distance * minDim;
+    const radius = asteroid.distance;
     const x = centerX + Math.cos(currentAngle) * radius;
     const y = centerY + Math.sin(currentAngle) * radius;
 

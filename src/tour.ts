@@ -93,7 +93,13 @@ function goToStep(step: number): void {
 
   // Dim non-focused planets
   domCache.planets.forEach((el, i) => {
-    el.style.opacity = i === step ? '1' : '0.2';
+    if (i === step) {
+      el.style.opacity = '1';
+      el.classList.remove('tour-dimmed');
+    } else {
+      el.style.opacity = '0.2';
+      el.classList.add('tour-dimmed');
+    }
   });
 
   // Zoom to planet and show info
@@ -108,6 +114,7 @@ export function endTour(): void {
   // Restore planet opacities
   domCache.planets.forEach((el) => {
     el.style.opacity = '1';
+    el.classList.remove('tour-dimmed');
   });
 
   // Remove overlay
