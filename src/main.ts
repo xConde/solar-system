@@ -4,6 +4,8 @@ import { createSun, createPlanet, createMoons, createOrbitPath } from './dom.ts'
 import { createInfoPanel, showInfoPanel } from './panel.ts';
 import { initStarfield, handleStarfieldResize, pauseStarfield, resumeStarfield } from './stars.ts';
 import { initAsteroidBelt, handleAsteroidResize, pauseAsteroids, resumeAsteroids } from './asteroids.ts';
+import { initComets, handleCometResize, pauseComets, resumeComets } from './comets.ts';
+import { toggleAmbientAudio, playPlanetTone, getStoredAudioPreference } from './audio.ts';
 import {
   updateResponsiveProperties,
   calculateScalingFactor,
@@ -38,6 +40,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   updateResponsiveProperties();
   createSun(solarSystem);
+
+  // Kuiper Belt hint
+  const kuiperBelt = document.createElement('div');
+  kuiperBelt.classList.add('kuiper-belt');
+  solarSystem.appendChild(kuiperBelt);
+
   planets.forEach((planet) => {
     createOrbitPath(planet, solarSystem);
     const planetEl = createPlanet(planet, solarSystem);
@@ -51,6 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     planetEl.addEventListener('click', () => {
       showInfoPanel(infoPanel, planet);
+      playPlanetTone(planet.sizeRatio, planet.distance);
     });
     planetEl.addEventListener('dblclick', () => {
       zoomToElement(solarSystem, planetEl);
@@ -69,26 +78,46 @@ document.addEventListener('DOMContentLoaded', function () {
   resetBtn.addEventListener('click', () => resetViewport(solarSystem));
   controlBar.insertBefore(resetBtn, controlBar.firstChild);
 
+  const audioBtn = document.createElement('button');
+  audioBtn.classList.add('control-btn', 'control-btn--audio');
+  audioBtn.textContent = 'Sound';
+  audioBtn.setAttribute('aria-label', 'Enable ambient audio');
+  // Reflect stored preference in button state (but do NOT auto-play — browsers block it)
+  if (getStoredAudioPreference()) {
+    audioBtn.classList.add('control-btn--active');
+    audioBtn.setAttribute('aria-label', 'Disable ambient audio');
+  }
+  audioBtn.addEventListener('click', () => {
+    const enabled = toggleAmbientAudio();
+    audioBtn.classList.toggle('control-btn--active', enabled);
+    audioBtn.setAttribute('aria-label', enabled ? 'Disable ambient audio' : 'Enable ambient audio');
+  });
+  controlBar.appendChild(audioBtn);
+
   document.body.appendChild(controlBar);
   initKeyboardShortcuts();
 
   const starCount = window.innerWidth <= 768 ? 50 : 100;
   initStarfield(solarSystem, starCount);
   initAsteroidBelt(solarSystem, window.innerWidth <= 768 ? 150 : 300);
+  initComets(solarSystem);
   applyScalingAndReposition(planets, scalingFactor);
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   if (reducedMotion.matches) {
     pauseStarfield();
     pauseAsteroids();
+    pauseComets();
   }
   reducedMotion.addEventListener('change', (e) => {
     if (e.matches) {
       pauseStarfield();
       pauseAsteroids();
+      pauseComets();
     } else {
       resumeStarfield();
       resumeAsteroids();
+      resumeComets();
     }
   });
 
@@ -107,6 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     handleStarfieldResize();
     handleAsteroidResize();
+    handleCometResize();
   }
 
   mediaQueries.forEach((mq) => mq.addEventListener('change', handleViewportChange));

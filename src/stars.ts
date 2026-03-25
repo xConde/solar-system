@@ -47,8 +47,9 @@ function generateStars(count: number): Star[] {
 function resizeCanvas(): void {
   if (!canvas) return;
   const dpr = window.devicePixelRatio || 1;
-  canvas.width = window.innerWidth * dpr;
-  canvas.height = window.innerHeight * dpr;
+  const maxDim = 4096;
+  canvas.width = Math.min(window.innerWidth * dpr, maxDim * dpr);
+  canvas.height = Math.min(window.innerHeight * dpr, maxDim * dpr);
   canvas.style.width = `${window.innerWidth}px`;
   canvas.style.height = `${window.innerHeight}px`;
   if (ctx) ctx.scale(dpr, dpr);

@@ -50,6 +50,12 @@ export function showInfoPanel(panel: HTMLDivElement, planet: Planet): void {
   const fact = panel.querySelector('.info-panel-fact') as HTMLParagraphElement;
 
   title.textContent = planet.name.charAt(0).toUpperCase() + planet.name.slice(1);
+  if (planet.type === 'dwarf-planet') {
+    const badge = document.createElement('span');
+    badge.classList.add('info-panel-badge');
+    badge.textContent = 'Dwarf Planet';
+    title.appendChild(badge);
+  }
 
   // Clear previous entries. Empty string is safe; planet data is written via
   // textContent below, never via innerHTML.

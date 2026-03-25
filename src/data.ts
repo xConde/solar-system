@@ -8,6 +8,7 @@ export function getPlanetData(): Planet[] {
       sizeRatio: 0.383,
       distance: 0.39,
       orbitalPeriod: 87.97,
+      type: 'planet',
       moons: [],
       initialAngle: Math.random() * 2 * Math.PI,
       info: {
@@ -24,6 +25,7 @@ export function getPlanetData(): Planet[] {
       sizeRatio: 0.949,
       distance: 0.72,
       orbitalPeriod: 224.7,
+      type: 'planet',
       moons: [],
       initialAngle: Math.random() * 2 * Math.PI,
       info: {
@@ -40,6 +42,7 @@ export function getPlanetData(): Planet[] {
       sizeRatio: 1,
       distance: 1,
       orbitalPeriod: 365.25,
+      type: 'planet',
       moons: [{ name: 'luna', distance: 30, color: '#ccc', sizeRatio: 1 }],
       initialAngle: Math.random() * 2 * Math.PI,
       info: {
@@ -56,6 +59,7 @@ export function getPlanetData(): Planet[] {
       sizeRatio: 0.57,
       distance: 1.52,
       orbitalPeriod: 687,
+      type: 'planet',
       moons: [
         { name: 'phobos', distance: 2.8, color: '#ccc', sizeRatio: 0.5 },
         { name: 'deimos', distance: 7, color: '#ccc', sizeRatio: 0.5 },
@@ -70,11 +74,29 @@ export function getPlanetData(): Planet[] {
       },
     },
     {
+      name: 'ceres',
+      color: '#a0937d',
+      sizeRatio: 0.075,
+      distance: 2.77,
+      orbitalPeriod: 1682,
+      type: 'dwarf-planet',
+      moons: [],
+      initialAngle: Math.random() * 2 * Math.PI,
+      info: {
+        diameter: '946 km',
+        distanceFromSun: '413.7 million km',
+        orbitalPeriod: '1,682 days',
+        numberOfMoons: 0,
+        funFact: 'Ceres is the largest object in the asteroid belt and contains about a third of the belt\'s total mass.',
+      },
+    },
+    {
       name: 'jupiter',
       color: '#f1c40f',
       sizeRatio: 2,
       distance: 5.2,
       orbitalPeriod: 4332.59,
+      type: 'planet',
       moons: [
         { name: 'io', distance: 5.9, color: '#ccc', sizeRatio: 0.666 },
         { name: 'europa', distance: 9.4, color: '#ccc', sizeRatio: 0.666 },
@@ -96,6 +118,7 @@ export function getPlanetData(): Planet[] {
       sizeRatio: 1.714,
       distance: 9.5,
       orbitalPeriod: 10759.22,
+      type: 'planet',
       moons: [{ name: 'titan', distance: 20.6, color: '#ccc', sizeRatio: 1.333 }],
       initialAngle: Math.random() * 2 * Math.PI,
       info: {
@@ -112,6 +135,7 @@ export function getPlanetData(): Planet[] {
       sizeRatio: 1.556,
       distance: 19.2,
       orbitalPeriod: 30688.5,
+      type: 'planet',
       moons: [
         { name: 'titania', distance: 28.7, color: '#ccc', sizeRatio: 1 },
         { name: 'oberon', distance: 30.4, color: '#ccc', sizeRatio: 1 },
@@ -131,6 +155,7 @@ export function getPlanetData(): Planet[] {
       sizeRatio: 1.556,
       distance: 30.1,
       orbitalPeriod: 60182,
+      type: 'planet',
       moons: [{ name: 'triton', distance: 14.4, color: '#ccc', sizeRatio: 1 }],
       initialAngle: Math.random() * 2 * Math.PI,
       info: {
@@ -139,6 +164,25 @@ export function getPlanetData(): Planet[] {
         orbitalPeriod: '60,190 days',
         numberOfMoons: 16,
         funFact: 'Neptune has the strongest winds in the solar system, up to 2,100 km/h.',
+      },
+    },
+    {
+      name: 'pluto',
+      color: '#c4b5a0',
+      sizeRatio: 0.18,
+      distance: 39.5,
+      orbitalPeriod: 90560,
+      type: 'dwarf-planet',
+      moons: [
+        { name: 'charon', distance: 10, color: '#9e9e9e', sizeRatio: 0.8 },
+      ],
+      initialAngle: Math.random() * 2 * Math.PI,
+      info: {
+        diameter: '2,377 km',
+        distanceFromSun: '5.9 billion km',
+        orbitalPeriod: '90,560 days',
+        numberOfMoons: 5,
+        funFact: 'Pluto was reclassified as a dwarf planet in 2006, but it still has a heart-shaped glacier.',
       },
     },
   ];

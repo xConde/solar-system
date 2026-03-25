@@ -52,9 +52,11 @@ export function initViewport(container: HTMLElement): void {
     applyTransform(container);
   });
 
-  const stopDrag = () => {
+  const stopDrag = (e: PointerEvent) => {
+    if (!isDragging) return;
     isDragging = false;
     container.style.cursor = '';
+    container.releasePointerCapture(e.pointerId);
   };
   container.addEventListener('pointerup', stopDrag);
   container.addEventListener('pointercancel', stopDrag);

@@ -20,6 +20,7 @@ export interface Planet {
   sizeRatio: number;
   distance: number;
   orbitalPeriod: number;
+  type: 'planet' | 'dwarf-planet';
   moons: Moon[];
   initialAngle: number;
   info?: PlanetInfo;

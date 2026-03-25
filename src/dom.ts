@@ -45,6 +45,11 @@ export function createPlanet(planet: Planet, solarSystem: HTMLElement): HTMLDivE
   planetEl.style.setProperty('--planet-color', planet.color);
   planetEl.style.setProperty('--planet-size', `calc(var(--earth-size) * ${planet.sizeRatio})`);
   planetEl.style.backgroundColor = planet.color;
+
+  if (planet.type === 'dwarf-planet') {
+    planetEl.classList.add('dwarf-planet');
+    planetEl.style.opacity = '0.7';
+  }
   planetEl.style.width = `calc(var(--earth-size) * ${planet.sizeRatio})`;
   planetEl.style.height = `calc(var(--earth-size) * ${planet.sizeRatio})`;
 
