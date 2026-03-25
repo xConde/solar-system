@@ -8,6 +8,9 @@ interface Settings {
 
 const STORAGE_KEY = 'solar-system-settings';
 
+const VALID_THEMES = new Set<string>(['dark', 'light']);
+const VALID_STAR_DENSITIES = new Set<string>(['sparse', 'normal', 'dense']);
+
 function loadSettings(): Settings {
   const defaults: Settings = {
     theme: 'dark',
@@ -18,10 +21,26 @@ function loadSettings(): Settings {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
-      return { ...defaults, ...JSON.parse(stored) };
+      // Validate each field individually rather than blindly spreading the
+      // parsed object — prevents unexpected keys or type-confused values
+      // from influencing application state even within same-origin context.
+      const parsed: unknown = JSON.parse(stored);
+      if (parsed !== null && typeof parsed === 'object') {
+        const raw = parsed as Record<string, unknown>;
+        if (VALID_THEMES.has(raw['theme'] as string)) {
+          defaults.theme = raw['theme'] as Theme;
+        }
+        if (typeof raw['labelsAlwaysOn'] === 'boolean') {
+          defaults.labelsAlwaysOn = raw['labelsAlwaysOn'];
+        }
+        if (VALID_STAR_DENSITIES.has(raw['starDensity'] as string)) {
+          defaults.starDensity = raw['starDensity'] as Settings['starDensity'];
+        }
+      }
+      return defaults;
     }
   } catch {
-    // localStorage unavailable
+    // localStorage unavailable or JSON malformed
   }
 
   // Respect system preference

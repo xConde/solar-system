@@ -2,6 +2,7 @@ import type { Planet } from './types.ts';
 import { domCache } from './state.ts';
 import { showInfoPanel } from './panel.ts';
 import { zoomToElement } from './viewport.ts';
+import { isTourActive } from './tour.ts';
 
 let planets: Planet[] = [];
 let container: HTMLElement | null = null;
@@ -24,6 +25,11 @@ export function initRouter(
 }
 
 function handleHash(): void {
+  // Do not interrupt an active tour — the tour controls its own panel and
+  // viewport state. Accepting a hash change mid-tour would leave the tour
+  // overlay in an inconsistent state.
+  if (isTourActive()) return;
+
   const hash = window.location.hash.slice(1).toLowerCase();
   if (!hash || !container || !panel) return;
 

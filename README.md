@@ -1,30 +1,101 @@
 # Solar System
 
-![](https://drive.google.com/uc?id=1w5IqtUZLqyFcpOFc-zassKPMJQaXw9rF)
-
-This project is a simple web application that visualizes the Solar System using JavaScript, HTML, and CSS. It displays the Sun, planets, and some of their moons in a dynamic and interactive way.
+An interactive solar system visualization built with TypeScript, CSS, and Canvas. Features orbiting planets with moons, dwarf planets, asteroid belt, comets, and a guided tour with real astronomical data.
 
 ## Features
-- Displays the Sun, planets, and some moons
-- Planets and moons are animated, orbiting around their respective centers
-- Planets can be clicked to highlight their orbit
-- Resizes and repositions elements on window resize
-- Background stars with twinkling effect
 
-## Files
-- app.js: The main JavaScript file containing the logic for creating and animating the solar system elements
-- index.html: The HTML file providing the structure for the solar system visualization
-- styles.css: The CSS file containing styles for the solar system elements and animations
+- **10 celestial bodies**: 8 planets + Ceres and Pluto (dwarf planets) with accurate relative properties
+- **Moons**: 11 moons orbiting their parent planets
+- **Asteroid belt**: Canvas-rendered particle field between Mars and Jupiter
+- **Comets**: Halley and Hale-Bopp with Kepler-approximated elliptical orbits
+- **Canvas starfield**: Performant twinkling stars with safe-zone avoidance
+- **Info panel**: Click any planet for real astronomical data (diameter, distance, orbital period, fun facts)
+- **Guided tour**: Step-by-step walkthrough of the solar system
+- **Time controls**: Play/pause, speed slider (0.1x-5x) using Web Animations API
+- **Zoom and pan**: Mouse wheel zoom, click-drag pan, double-click to focus
+- **Scale modes**: Toggle between stylized and logarithmic scale
+- **Deep links**: Share direct links to specific planets (#earth, #saturn)
+- **Keyboard accessible**: Full keyboard navigation, ARIA labels, screen reader support
+- **Reduced motion**: Respects prefers-reduced-motion preference
+- **PWA**: Installable, works offline via service worker
+- **Theme**: Dark/light toggle with system preference detection
+- **Ambient audio**: Web Audio API drone and per-planet tones (off by default)
 
-## Usage
-1. Clone the repository or download the source files.
-2. Open the index.html file in your web browser.
+## Tech Stack
 
-## Code Overview
-- getPlanetData(): Returns an array of objects containing information about planets and their moons.
-- createSun(), createPlanet(), createMoons(): Functions for creating DOM elements for the Sun, planets, and moons.
-- spawnStars(): Generates background stars with random sizes and positions.
-- calculateScalingFactor(), positionElement(): Functions for calculating the scaling factor and positioning elements.
-- applyScalingAndReposition(): Adjusts the positions and scales of planets, moons, and stars based on the current window size.
-- throttle(): Throttles a function, ensuring it's only called once every specified time interval.
-- handlePlanetClick(), checkPlanetsOffScreen(), scheduleCheck(): Event handlers for click events and checking if planets are off-screen.
+- TypeScript (strict mode)
+- Vite (build + dev server)
+- CSS Layers and Nesting
+- Canvas API (stars, asteroids, comets)
+- Web Animations API (playback control)
+- Web Audio API (ambient sound)
+- Vitest (unit tests)
+- Playwright (E2E tests)
+- ESLint + Prettier
+- GitHub Actions CI
+- Cloudflare Pages deployment
+- PWA with Workbox
+
+## Development
+
+```bash
+npm install
+npm run dev          # Start dev server
+npm run build        # Production build
+npm run preview      # Preview production build
+npm run type-check   # TypeScript validation
+npm run lint         # ESLint
+npm run format       # Prettier
+npm test             # Unit tests (Vitest)
+npm run test:e2e     # E2E tests (Playwright)
+```
+
+## Project Structure
+
+```
+src/
+  main.ts          # Application entry point
+  data.ts          # Planet/moon data model
+  dom.ts           # DOM element creation
+  scaling.ts       # Responsive scaling and positioning
+  stars.ts         # Canvas starfield
+  asteroids.ts     # Canvas asteroid belt
+  comets.ts        # Canvas comet system
+  panel.ts         # Planet info panel
+  controls.ts      # Time controls (play/pause/speed)
+  viewport.ts      # Zoom and pan
+  tour.ts          # Guided tour
+  router.ts        # Hash-based deep linking
+  audio.ts         # Web Audio ambient sound
+  settings.ts      # Theme and preferences
+  scale-mode.ts    # Stylized/logarithmic toggle
+  performance.ts   # Web Vitals monitoring
+  state.ts         # Shared state management
+  types.ts         # TypeScript interfaces
+  styles.css       # Styles with CSS layers and nesting
+```
+
+## Keyboard Shortcuts
+
+| Key | Action |
+|-----|--------|
+| Space | Toggle play/pause |
+| + / - | Adjust animation speed |
+| Enter / Space (on planet) | Toggle planet info |
+| Tab | Navigate between planets |
+| Escape | Close info panel |
+
+## Deployment
+
+Built for Cloudflare Pages:
+
+```bash
+npm run build   # Output: dist/
+```
+
+Build command: `npm run build`
+Output directory: `dist`
+
+## License
+
+MIT
