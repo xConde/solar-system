@@ -108,6 +108,8 @@ function createPlanet(planet, solarSystem) {
 
   const label = document.createElement('div');
   label.classList.add('planet-label');
+  // Safe: planet.name comes from hardcoded getPlanetData(), never from user input.
+  // If this data source ever changes to accept external input, sanitize before assignment.
   label.innerText = planet.name;
   planetEl.appendChild(label);
 
@@ -121,7 +123,7 @@ function createPlanet(planet, solarSystem) {
 
   planetEl.addEventListener('click', handlePlanetClick);
   planetEl.addEventListener('animationiteration', () => {
-    const currentValue = parseInt(rotationCounterEl.innerText) || 0;
+    const currentValue = parseInt(rotationCounterEl.innerText, 10) || 0;
     rotationCounterEl.innerText = currentValue + 1;
   });
 
@@ -161,11 +163,15 @@ function positionStar(star) {
   const sunRadiusX = (getSunRadius() / window.innerWidth) * 100 * safeZoneMargin;
   const sunRadiusY = (getSunRadius() / window.innerHeight) * 100 * safeZoneMargin;
   let x, y;
+  let iterations = 0;
+  const MAX_ITERATIONS = 100;
   do {
     x = Math.random() * 100;
     y = Math.random() * 100;
+    iterations++;
   } while (
-    Math.sqrt(Math.pow((50 - x) / sunRadiusX, 2) + Math.pow((50 - y) / sunRadiusY, 2)) < 1
+    Math.sqrt(Math.pow((50 - x) / sunRadiusX, 2) + Math.pow((50 - y) / sunRadiusY, 2)) < 1 &&
+    iterations < MAX_ITERATIONS
   );
 
   star.style.left = `${x}vw`;
@@ -219,6 +225,10 @@ function applyScalingAndReposition(planets, stars, scaleFactor, positionFactor =
 
     planet.moons.forEach(moon => {
       const moonEl = domCache.moons[moon.name];
+      if (!moonEl) {
+        console.warn(`Solar System: no cached DOM element for moon "${moon.name}"; skipping reposition.`);
+        return;
+      }
       positionElement(moon, moonEl, newScalingFactor * 2, scaleFactor);
     });
   });
@@ -301,6 +311,10 @@ function planetsOffScreen(planets) {
 document.addEventListener('DOMContentLoaded', function () {
   const planets = getPlanetData();
   const solarSystem = document.querySelector('.solar-system');
+  if (!solarSystem) {
+    console.error('Solar System: required .solar-system element not found in DOM.');
+    return;
+  }
   const scalingFactor = calculateScalingFactor();
 
   createSun(solarSystem);
