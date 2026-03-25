@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   updateResponsiveProperties();
   createSun(solarSystem);
-  planets.forEach(planet => {
+  planets.forEach((planet) => {
     const planetEl = createPlanet(planet, solarSystem);
     positionElement(planet, planetEl, scalingFactor);
     rotateElement(planetEl);
@@ -45,14 +45,25 @@ document.addEventListener('DOMContentLoaded', function () {
     domCache.planets.push(planetEl);
   });
 
-  const stars = spawnStars(solarSystem, 100);
+  const starCount = window.innerWidth <= 768 ? 50 : 100;
+  const stars = spawnStars(solarSystem, starCount);
   applyScalingAndReposition(planets, stars, scalingFactor);
 
-  window.addEventListener('resize',
-  throttle(() => {
+  const mediaQueries = [
+    window.matchMedia('(max-width: 480px)'),
+    window.matchMedia('(max-width: 768px)'),
+    window.matchMedia('(max-width: 1024px)'),
+  ];
+
+  function handleViewportChange() {
     updateResponsiveProperties();
     const resizeScalingFactor = calculateScalingFactor();
     applyScalingAndReposition(planets, stars, resizeScalingFactor);
     scheduleCheck(planets, stars, resizeScalingFactor);
-  }, 200));
+  }
+
+  mediaQueries.forEach((mq) => mq.addEventListener('change', handleViewportChange));
+
+  // Still need resize for continuous scaling (not just breakpoint changes)
+  window.addEventListener('resize', throttle(handleViewportChange, 200));
 });

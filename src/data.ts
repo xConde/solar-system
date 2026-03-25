@@ -26,9 +26,7 @@ export function getPlanetData(): Planet[] {
       sizeRatio: 1,
       distance: 1,
       orbitalPeriod: 365.25,
-      moons: [
-        { name: 'luna', distance: 30, color: '#ccc', sizeRatio: 1 }
-      ],
+      moons: [{ name: 'luna', distance: 30, color: '#ccc', sizeRatio: 1 }],
       initialAngle: Math.random() * 2 * Math.PI,
     },
     {
@@ -63,9 +61,7 @@ export function getPlanetData(): Planet[] {
       sizeRatio: 1.714,
       distance: 9.5,
       orbitalPeriod: 10759.22,
-      moons: [
-        { name: 'titan', distance: 20.6, color: '#ccc', sizeRatio: 1.333 },
-      ],
+      moons: [{ name: 'titan', distance: 20.6, color: '#ccc', sizeRatio: 1.333 }],
       initialAngle: Math.random() * 2 * Math.PI,
     },
     {
@@ -86,9 +82,7 @@ export function getPlanetData(): Planet[] {
       sizeRatio: 1.556,
       distance: 30.1,
       orbitalPeriod: 60182,
-      moons: [
-        { name: 'triton', distance: 14.4, color: '#ccc', sizeRatio: 1 },
-      ],
+      moons: [{ name: 'triton', distance: 14.4, color: '#ccc', sizeRatio: 1 }],
       initialAngle: Math.random() * 2 * Math.PI,
     },
   ];

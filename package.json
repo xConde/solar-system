@@ -7,7 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write \"src/**/*.{ts,css}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,css}\""
   },
   "keywords": [
     "solar-system",
@@ -20,7 +24,11 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "eslint": "10.1.0",
+    "prettier": "3.8.1",
     "typescript": "6.0.2",
+    "typescript-eslint": "8.57.2",
     "vite": "^6.0.0"
   }
 }

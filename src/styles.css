@@ -14,15 +14,11 @@
 /* Keyframes — must stay outside @layer blocks (global by spec) */
 @keyframes orbit {
   0% {
-    transform: rotate(var(--rotation))
-      translateX(var(--distance))
-      translateY(-50%)
+    transform: rotate(var(--rotation)) translateX(var(--distance)) translateY(-50%)
       rotate(calc(-1 * var(--rotation)));
   }
   100% {
-    transform: rotate(calc(var(--rotation) + 360deg))
-      translateX(var(--distance))
-      translateY(-50%)
+    transform: rotate(calc(var(--rotation) + 360deg)) translateX(var(--distance)) translateY(-50%)
       rotate(calc(-1 * var(--rotation) - 360deg));
   }
 }
@@ -38,13 +34,25 @@
 
 @keyframes glowing {
   0% {
-    box-shadow: 0 0 5px var(--color-sun), 0 0 10px var(--color-sun), 0 0 15px var(--color-sun), 0 0 20px var(--color-sun);
+    box-shadow:
+      0 0 5px var(--color-sun),
+      0 0 10px var(--color-sun),
+      0 0 15px var(--color-sun),
+      0 0 20px var(--color-sun);
   }
   50% {
-    box-shadow: 0 0 10px var(--color-sun), 0 0 20px var(--color-sun), 0 0 30px var(--color-sun), 0 0 40px var(--color-sun);
+    box-shadow:
+      0 0 10px var(--color-sun),
+      0 0 20px var(--color-sun),
+      0 0 30px var(--color-sun),
+      0 0 40px var(--color-sun);
   }
   100% {
-    box-shadow: 0 0 5px var(--color-sun), 0 0 10px var(--color-sun), 0 0 15px var(--color-sun), 0 0 20px var(--color-sun);
+    box-shadow:
+      0 0 5px var(--color-sun),
+      0 0 10px var(--color-sun),
+      0 0 15px var(--color-sun),
+      0 0 20px var(--color-sun);
   }
 }
 
@@ -61,7 +69,8 @@
 }
 
 @layer base {
-  html, body {
+  html,
+  body {
     font-family: 'Arial', sans-serif;
     display: flex;
     justify-content: center;
@@ -96,6 +105,7 @@
     height: 100%;
     align-items: center;
     justify-content: center;
+    contain: layout style;
   }
 }
 
@@ -125,14 +135,15 @@
     }
   }
 
-  .planet, .moon {
+  .planet,
+  .moon {
     position: absolute;
     opacity: 0;
     border-radius: 50%;
     animation-name: orbit;
     animation-duration: var(--duration);
     animation-iteration-count: infinite;
-    transform: rotate(var(--rotation)) translateX(calc(-50% + var(--distance)em)) translateY(-50%);
+    transform: rotate(var(--rotation)) translateX(calc(-50% + var(--distance) em)) translateY(-50%);
     transform-style: preserve-3d;
     animation-timing-function: cubic-bezier(0.3, 1, 0.4, 0.8);
     transition: transform 0.5s ease;
@@ -140,6 +151,7 @@
 
   .planet {
     z-index: 5;
+    will-change: transform;
   }
 
   .mercury {
@@ -209,7 +221,9 @@
     position: absolute;
     background-color: var(--color-star);
     border-radius: 50%;
-    transition: transform 1s ease, opacity 0.25s ease-in-out;
+    transition:
+      transform 1s ease,
+      opacity 0.25s ease-in-out;
     opacity: 0.8;
     z-index: 1;
     animation: twinkling 1.5s infinite;
@@ -346,7 +360,9 @@
       }
     }
 
-    &.mars::before, &.earth::before, &.venus::before {
+    &.mars::before,
+    &.earth::before,
+    &.venus::before {
       top: -150%;
       left: -150%;
       width: 400%;
@@ -409,7 +425,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .planet, .moon {
+  .planet,
+  .moon {
     animation: none;
   }
 

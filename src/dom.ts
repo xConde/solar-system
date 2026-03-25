@@ -31,8 +31,7 @@ export function createPlanet(planet: Planet, solarSystem: HTMLElement): HTMLDivE
 
   const rotationCounterEl = document.createElement('div');
   rotationCounterEl.classList.add('rotation-counter');
-  const planetSize = parseFloat(getComputedStyle(planetEl).getPropertyValue(`--${planet.name}-size`));
-  const counterSize = Math.max(Math.min(planetSize * 0.2, 16), 12);
+  const counterSize = Math.max(Math.min(planet.sizeRatio * 3, 16), 12);
   rotationCounterEl.style.fontSize = `${counterSize}px`;
   rotationCounterEl.innerText = '';
   planetEl.appendChild(rotationCounterEl);
