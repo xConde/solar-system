@@ -8,8 +8,14 @@ export function createOrbitPath(planet: Planet, solarSystem: HTMLElement): HTMLD
   const tempEl = document.createElement('div');
   tempEl.classList.add('planet', planet.name);
   solarSystem.appendChild(tempEl);
-  const distance = getComputedStyle(tempEl).getPropertyValue('--distance').trim();
-  solarSystem.removeChild(tempEl);
+  // try/finally ensures the temp element is always removed from the DOM even
+  // if getComputedStyle throws (e.g. in unusual browser environments).
+  let distance: string;
+  try {
+    distance = getComputedStyle(tempEl).getPropertyValue('--distance').trim();
+  } finally {
+    solarSystem.removeChild(tempEl);
+  }
 
   const distanceValue = parseFloat(distance);
   const unit = distance.replace(/[\d.]/g, '');
@@ -42,7 +48,11 @@ export function createPlanet(planet: Planet, solarSystem: HTMLElement): HTMLDivE
   planetEl.style.width = `calc(var(--earth-size) * ${planet.sizeRatio})`;
   planetEl.style.height = `calc(var(--earth-size) * ${planet.sizeRatio})`;
 
-  // Planet surface detail via gradients
+  // Planet surface detail via gradients.
+  // Safety: planet.color is interpolated directly into CSS gradient strings.
+  // This is safe because planet data is hardcoded in getPlanetData(). If planet
+  // data is ever sourced externally, validate/sanitize color values (e.g. against
+  // a CSS color allowlist) before this interpolation.
   const gradients: Record<string, string> = {
     mercury: `radial-gradient(circle at 35% 35%, #d4d4d4, ${planet.color} 60%, #888 100%)`,
     venus: `radial-gradient(circle at 35% 35%, #f7dc6f, ${planet.color} 60%, #c8a415 100%)`,

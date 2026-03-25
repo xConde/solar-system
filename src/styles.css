@@ -3,8 +3,7 @@
   --color-sun: #f39c12;
   --color-space: #000;
   --color-text: #fff;
-  --color-star: #ffffff;
-  --earth-size: 2.3625rem;
+--earth-size: 2.3625rem;
   --luna-moon-size: 0.675rem;
   --sun-size: 10rem;
 }
@@ -56,17 +55,6 @@
   }
 }
 
-@keyframes twinkling {
-  0% {
-    opacity: 0.7;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.7;
-  }
-}
 
 @layer base {
   html,
@@ -247,28 +235,14 @@
     z-index: 2;
   }
 
-  .star {
+  .starfield-canvas {
     position: absolute;
-    background-color: var(--color-star);
-    border-radius: 50%;
-    transition:
-      transform 1s ease,
-      opacity 0.25s ease-in-out;
-    opacity: 0.8;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     z-index: 1;
-    animation: twinkling 1.5s infinite;
-  }
-
-  .star:nth-of-type(1) {
-    animation-delay: 4s;
-  }
-
-  .star:nth-of-type(2) {
-    animation-delay: 2s;
-  }
-
-  .star:nth-of-type(3) {
-    animation-delay: 7s;
+    pointer-events: none;
   }
 }
 
@@ -540,6 +514,51 @@
   }
 }
 
+.control-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(10, 10, 30, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 30px;
+  padding: 8px 20px;
+  z-index: 50;
+  backdrop-filter: blur(10px);
+}
+
+.control-btn {
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.control-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.control-slider {
+  width: 120px;
+  accent-color: var(--color-sun);
+  cursor: pointer;
+}
+
+.control-speed-label {
+  font-size: 0.8rem;
+  color: var(--color-text);
+  opacity: 0.7;
+  min-width: 32px;
+  text-align: center;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .planet,
   .moon {
@@ -551,10 +570,5 @@
     animation-duration: 3s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
-  }
-
-  .star {
-    animation: none;
-    opacity: 0.8;
   }
 }

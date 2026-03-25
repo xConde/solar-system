@@ -2,12 +2,18 @@ import type { Planet } from './types.ts';
 
 let currentPanel: HTMLDivElement | null = null;
 let currentPlanetName: string | null = null;
+// Tracks whether the global Escape key listener has been registered.
+// createInfoPanel must only be called once; this flag prevents a duplicate
+// listener if that invariant is ever accidentally broken.
+let escapeListenerRegistered = false;
 
 export function createInfoPanel(): HTMLDivElement {
   const panel = document.createElement('div');
   panel.classList.add('info-panel');
   panel.setAttribute('role', 'dialog');
   panel.setAttribute('aria-label', 'Planet information');
+  // Safety: this is a fully static template string — no dynamic data is
+  // interpolated here, so there is no XSS risk despite the use of innerHTML.
   panel.innerHTML = `
     <button class="info-panel-close" aria-label="Close panel">&times;</button>
     <h2 class="info-panel-title"></h2>
@@ -18,9 +24,14 @@ export function createInfoPanel(): HTMLDivElement {
   const closeBtn = panel.querySelector('.info-panel-close') as HTMLButtonElement;
   closeBtn.addEventListener('click', () => hideInfoPanel());
 
-  document.addEventListener('keydown', (e: KeyboardEvent) => {
-    if (e.key === 'Escape') hideInfoPanel();
-  });
+  // Guard against duplicate global listeners if createInfoPanel is ever called
+  // more than once (e.g. during tests or future refactors).
+  if (!escapeListenerRegistered) {
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Escape') hideInfoPanel();
+    });
+    escapeListenerRegistered = true;
+  }
 
   return panel;
 }
@@ -40,6 +51,8 @@ export function showInfoPanel(panel: HTMLDivElement, planet: Planet): void {
 
   title.textContent = planet.name.charAt(0).toUpperCase() + planet.name.slice(1);
 
+  // Clear previous entries. Empty string is safe; planet data is written via
+  // textContent below, never via innerHTML.
   data.innerHTML = '';
   const fields: [string, string][] = [
     ['Diameter', planet.info.diameter],

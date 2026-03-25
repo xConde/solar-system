@@ -2,7 +2,7 @@ import './styles.css';
 import { getPlanetData } from './data.ts';
 import { createSun, createPlanet, createMoons, createOrbitPath } from './dom.ts';
 import { createInfoPanel, showInfoPanel } from './panel.ts';
-import { spawnStars } from './stars.ts';
+import { initStarfield, handleStarfieldResize, pauseStarfield, resumeStarfield } from './stars.ts';
 import {
   updateResponsiveProperties,
   calculateScalingFactor,
@@ -13,6 +13,7 @@ import {
   throttle,
 } from './scaling.ts';
 import { domCache } from './state.ts';
+import { createControlBar, initKeyboardShortcuts } from './controls.ts';
 
 document.addEventListener('DOMContentLoaded', function () {
   const planets = getPlanetData();
@@ -52,9 +53,22 @@ document.addEventListener('DOMContentLoaded', function () {
     domCache.planets.push(planetEl);
   });
 
+  const controlBar = createControlBar();
+  document.body.appendChild(controlBar);
+  initKeyboardShortcuts();
+
   const starCount = window.innerWidth <= 768 ? 50 : 100;
-  const stars = spawnStars(solarSystem, starCount);
-  applyScalingAndReposition(planets, stars, scalingFactor);
+  initStarfield(solarSystem, starCount);
+  applyScalingAndReposition(planets, scalingFactor);
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (reducedMotion.matches) {
+    pauseStarfield();
+  }
+  reducedMotion.addEventListener('change', (e) => {
+    if (e.matches) pauseStarfield();
+    else resumeStarfield();
+  });
 
   const mediaQueries = [
     window.matchMedia('(max-width: 480px)'),
@@ -65,8 +79,9 @@ document.addEventListener('DOMContentLoaded', function () {
   function handleViewportChange() {
     updateResponsiveProperties();
     const resizeScalingFactor = calculateScalingFactor();
-    applyScalingAndReposition(planets, stars, resizeScalingFactor);
-    scheduleCheck(planets, stars, resizeScalingFactor);
+    applyScalingAndReposition(planets, resizeScalingFactor);
+    scheduleCheck(planets, resizeScalingFactor);
+    handleStarfieldResize();
   }
 
   mediaQueries.forEach((mq) => mq.addEventListener('change', handleViewportChange));

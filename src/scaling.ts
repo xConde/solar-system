@@ -35,28 +35,6 @@ export function getSunRadius(): number {
   return (sunSize * fontSize) / 2;
 }
 
-export function positionStar(star: HTMLDivElement): void {
-  const safeZoneMargin = 1.15;
-  const sunRadiusX = (getSunRadius() / window.innerWidth) * 100 * safeZoneMargin;
-  const sunRadiusY = (getSunRadius() / window.innerHeight) * 100 * safeZoneMargin;
-  // eslint-disable-next-line no-useless-assignment
-  let x = 0;
-  // eslint-disable-next-line no-useless-assignment
-  let y = 0;
-  let iterations = 0;
-  const MAX_ITERATIONS = 100;
-  do {
-    x = Math.random() * 100;
-    y = Math.random() * 100;
-    iterations++;
-  } while (
-    Math.sqrt(Math.pow((50 - x) / sunRadiusX, 2) + Math.pow((50 - y) / sunRadiusY, 2)) < 1 &&
-    iterations < MAX_ITERATIONS
-  );
-
-  star.style.left = `${x}vw`;
-  star.style.top = `${y}vh`;
-}
 
 export function calculateScalingFactor(): number {
   const minDimension = Math.min(window.innerWidth, window.innerHeight);
@@ -92,7 +70,6 @@ export function positionElement(
 
 export function applyScalingAndReposition(
   planets: Planet[],
-  stars: HTMLDivElement[],
   scaleFactor: number,
   positionFactor = 1,
 ): void {
@@ -117,8 +94,6 @@ export function applyScalingAndReposition(
       positionElement(moon, moonEl, newScalingFactor * 2, scaleFactor);
     });
   });
-
-  stars.forEach((star) => positionStar(star));
 }
 
 export function throttle<T extends (...args: unknown[]) => void>(
@@ -168,7 +143,6 @@ export function planetsOffScreen(planets: HTMLDivElement[]): HTMLDivElement[] {
 
 export function checkPlanetsOffScreen(
   planets: Planet[],
-  stars: HTMLDivElement[],
   scalingFactor: number,
   maxAttempts = 5,
 ): void {
@@ -179,20 +153,19 @@ export function checkPlanetsOffScreen(
   if (offScreenPlanets.length > 0) {
     const positionFactor = 0.85;
     const scaleFactor = 0.9;
-    applyScalingAndReposition(planets, stars, scaleFactor, positionFactor);
-    checkPlanetsOffScreen(planets, stars, scalingFactor, maxAttempts - 1);
+    applyScalingAndReposition(planets, scaleFactor, positionFactor);
+    checkPlanetsOffScreen(planets, scalingFactor, maxAttempts - 1);
   }
 }
 
 export function scheduleCheck(
   planets: Planet[],
-  stars: HTMLDivElement[],
   scalingFactor: number,
 ): void {
   if (!checkScheduled) {
     setCheckScheduled(true);
     requestAnimationFrame(() => {
-      checkPlanetsOffScreen(planets, stars, scalingFactor);
+      checkPlanetsOffScreen(planets, scalingFactor);
       setCheckScheduled(false);
     });
   }
