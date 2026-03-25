@@ -5,15 +5,15 @@
 }
 
 /* Media queries */
-@media (max-width: 480px) {
+@media (max-width: 1024px) {
   :root {
-    --earth-size: .75rem;
-    --earth-moon-size: 0.21rem;
+    --earth-size: 2rem;
+    --luna-moon-size: 0.56rem;
   }
 
   .sun {
-    width: 4rem;
-    height: 4rem;
+    width: 8rem;
+    height: 8rem;
   }
 }
 
@@ -29,15 +29,15 @@
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 480px) {
   :root {
-    --earth-size: 2rem;
-    --luna-moon-size: 0.56rem;
+    --earth-size: .75rem;
+    --luna-moon-size: 0.21rem;
   }
 
   .sun {
-    width: 8rem;
-    height: 8rem;
+    width: 4rem;
+    height: 4rem;
   }
 }
 
@@ -290,20 +290,7 @@ html, body {
   --rotation: 100deg;
 }
 
-.saturn::before {
-  content: '';
-  position: absolute;
-  width: 9%;
-  height: 94%;
-  transform: rotate(60deg);
-  top: -8%;
-  left: 40%;
-  background-color: #e67e22;
-  z-index: 3;
-}
-
-.saturn::after {
-  content: '';
+.saturn-ring {
   position: absolute;
   width: 150%;
   height: 30%;
@@ -314,6 +301,7 @@ html, body {
   top: 40%;
   left: -25%;
   z-index: 0;
+  pointer-events: none;
 }
 
 .uranus {
@@ -436,11 +424,10 @@ html, body {
   position: absolute;
   background-color: #ffffff;
   border-radius: 50%;
-  transition: transform 1s ease;
+  transition: transform 1s ease, opacity 0.25s ease-in-out;
   opacity: 0.8;
   z-index: 1;
   animation: twinkling 1.5s infinite;
-  transition: opacity 0.25s ease-in-out;
 }
 
 .star:nth-of-type(1) {

@@ -8,12 +8,14 @@ function getPlanetData() {
       distance: 0.39,
       orbitalPeriod: 87.97,
       moons: [],
+      initialAngle: Math.random() * 2 * Math.PI,
     },
     {
       name: 'venus',
       distance: 0.72,
       orbitalPeriod: 224.7,
       moons: [],
+      initialAngle: Math.random() * 2 * Math.PI,
     },
     {
       name: 'earth',
@@ -22,6 +24,7 @@ function getPlanetData() {
       moons: [
         { name: 'luna', distance: 30 }
       ],
+      initialAngle: Math.random() * 2 * Math.PI,
     },
     {
       name: 'mars',
@@ -31,6 +34,7 @@ function getPlanetData() {
         { name: 'phobos', distance: 2.8 },
         { name: 'deimos', distance: 7 },
       ],
+      initialAngle: Math.random() * 2 * Math.PI,
     },
     {
       name: 'jupiter',
@@ -42,6 +46,7 @@ function getPlanetData() {
         { name: 'ganymede', distance: 15 },
         { name: 'callisto', distance: 26.3 },
       ],
+      initialAngle: Math.random() * 2 * Math.PI,
     },
     {
       name: 'saturn',
@@ -50,6 +55,7 @@ function getPlanetData() {
       moons: [
         { name: 'titan', distance: 20.6 },
       ],
+      initialAngle: Math.random() * 2 * Math.PI,
     },
     {
       name: 'uranus',
@@ -59,6 +65,7 @@ function getPlanetData() {
         { name: 'titania', distance: 28.7 },
         { name: 'oberon', distance: 30.4 },
       ],
+      initialAngle: Math.random() * 2 * Math.PI,
     },
     {
       name: 'neptune',
@@ -67,6 +74,7 @@ function getPlanetData() {
       moons: [
         { name: 'triton', distance: 14.4 },
       ],
+      initialAngle: Math.random() * 2 * Math.PI,
     },
   ];
 }
@@ -150,12 +158,15 @@ function createStar() {
 
 function positionStar(star) {
   const safeZoneMargin = 1.15;
-  const safeZoneRadius = getSunRadius() * safeZoneMargin;
+  const sunRadiusX = (getSunRadius() / window.innerWidth) * 100 * safeZoneMargin;
+  const sunRadiusY = (getSunRadius() / window.innerHeight) * 100 * safeZoneMargin;
   let x, y;
   do {
     x = Math.random() * 100;
     y = Math.random() * 100;
-  } while (Math.sqrt(Math.pow(50 - x, 2) + Math.pow(50 - y, 2)) < safeZoneRadius);
+  } while (
+    Math.sqrt(Math.pow((50 - x) / sunRadiusX, 2) + Math.pow((50 - y) / sunRadiusY, 2)) < 1
+  );
 
   star.style.left = `${x}vw`;
   star.style.top = `${y}vh`;
@@ -178,7 +189,7 @@ function calculateScalingFactor() {
 
 function calculateApproximateDistance(planet, scalingFactor) {
   const scaledDistance = planet.distance * scalingFactor;
-  const angle = Math.random() * 2 * Math.PI;
+  const angle = planet.initialAngle;
   const x = scaledDistance * Math.cos(angle);
   const y = scaledDistance * Math.sin(angle);
 
@@ -195,8 +206,8 @@ function positionElement(object, element, newScalingFactor, scaleFactor = 1) {
   element.style.transform = `translate(${x}em, ${y}em) scale(${scaleFactor})`;
 }
 
-function applyScalingAndReposition(planets, stars, scaleFactor) {
-  const newScalingFactor = calculateScalingFactor();
+function applyScalingAndReposition(planets, stars, scaleFactor, positionFactor = 1) {
+  const newScalingFactor = calculateScalingFactor() * positionFactor;
   const speedFactor = 500;
 
   planets.forEach((planet, index) => {
@@ -243,16 +254,19 @@ function throttle(func, wait) {
 }
 
 function handlePlanetClick(event) {
-  event.target.classList.toggle('clicked');
+  event.currentTarget.classList.toggle('clicked');
 }
 
-function checkPlanetsOffScreen(planets, stars, scalingFactor) {
+function checkPlanetsOffScreen(planets, stars, scalingFactor, maxAttempts = 5) {
+  if (maxAttempts <= 0) return;
+
   const offScreenPlanets = planetsOffScreen(domCache.planets);
 
   if (offScreenPlanets.length > 0) {
     const positionFactor = 0.85;
     const scaleFactor = 0.9;
     applyScalingAndReposition(planets, stars, scaleFactor, positionFactor);
+    checkPlanetsOffScreen(planets, stars, scalingFactor, maxAttempts - 1);
   }
 }
 
@@ -295,6 +309,11 @@ document.addEventListener('DOMContentLoaded', function () {
     positionElement(planet, planetEl, scalingFactor);
     rotateElement(planetEl);
     createMoons(planet, planetEl, scalingFactor);
+    if (planet.name === 'saturn') {
+      const ring = document.createElement('div');
+      ring.classList.add('saturn-ring');
+      planetEl.appendChild(ring);
+    }
     domCache.planets.push(planetEl);
   });
 
