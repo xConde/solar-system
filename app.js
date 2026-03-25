@@ -85,20 +85,35 @@ function createSun(parentElement) {
   parentElement.appendChild(sunEl);
 }
 
-function getSunRadius() {
-  const screenWidth = window.innerWidth;
-  const screenHeight = window.innerHeight;
-  const minScreenSize = Math.min(screenWidth, screenHeight);
+function updateResponsiveProperties() {
+  const width = window.innerWidth;
+  let earthSize, sunSize;
 
-  if (screenWidth <= 480) {
-    return minScreenSize * 0.04; // 4rem
-  } else if (screenWidth <= 768) {
-    return minScreenSize * 0.03; // 6rem
-  } else if (screenWidth <= 1024) {
-    return minScreenSize * 0.02; // 8rem
+  if (width <= 480) {
+    earthSize = 0.75;
+    sunSize = 4;
+  } else if (width <= 768) {
+    earthSize = 1.5;
+    sunSize = 6;
+  } else if (width <= 1024) {
+    earthSize = 2;
+    sunSize = 8;
   } else {
-    return minScreenSize * 0.025; // 10rem
+    earthSize = 2.3625;
+    sunSize = 10;
   }
+
+  const moonSize = earthSize * 0.285;
+
+  document.documentElement.style.setProperty('--earth-size', earthSize + 'rem');
+  document.documentElement.style.setProperty('--luna-moon-size', moonSize + 'rem');
+  document.documentElement.style.setProperty('--sun-size', sunSize + 'rem');
+}
+
+function getSunRadius() {
+  const sunSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sun-size'));
+  const fontSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+  return (sunSize * fontSize) / 2;
 }
 
 function createPlanet(planet, solarSystem) {
@@ -317,6 +332,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   const scalingFactor = calculateScalingFactor();
 
+  updateResponsiveProperties();
   createSun(solarSystem);
   planets.forEach(planet => {
     const planetEl = createPlanet(planet, solarSystem);
@@ -336,6 +352,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   window.addEventListener('resize',
   throttle(() => {
+    updateResponsiveProperties();
     const resizeScalingFactor = calculateScalingFactor();
     applyScalingAndReposition(planets, stars, resizeScalingFactor);
     scheduleCheck(planets, stars, resizeScalingFactor);

@@ -1,45 +1,10 @@
-/* Custom properties */
+/* Custom properties — fallback defaults; overridden at runtime by updateResponsiveProperties() */
 :root {
   --earth-size: 2.3625rem;
   --luna-moon-size: 0.675rem;
+  --sun-size: 10rem;
 }
 
-/* Media queries */
-@media (max-width: 1024px) {
-  :root {
-    --earth-size: 2rem;
-    --luna-moon-size: 0.56rem;
-  }
-
-  .sun {
-    width: 8rem;
-    height: 8rem;
-  }
-}
-
-@media (max-width: 768px) {
-  :root {
-    --earth-size: 1.5rem;
-    --luna-moon-size: 0.42rem;
-  }
-
-  .sun {
-    width: 6rem;
-    height: 6rem;
-  }
-}
-
-@media (max-width: 480px) {
-  :root {
-    --earth-size: .75rem;
-    --luna-moon-size: 0.21rem;
-  }
-
-  .sun {
-    width: 4rem;
-    height: 4rem;
-  }
-}
 
 /* Keyframes */
 @keyframes orbit {
@@ -116,8 +81,8 @@ html, body {
 .sun {
   position: absolute;
   background-color: #f39c12;
-  width: 10rem;
-  height: 10rem;
+  width: var(--sun-size);
+  height: var(--sun-size);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   z-index: 4;
