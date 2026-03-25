@@ -391,6 +391,8 @@
       left: -50%;
       width: 200%;
       height: 200%;
+      min-width: 44px;
+      min-height: 44px;
       z-index: 1;
     }
 
@@ -581,6 +583,45 @@
 
   .info-panel--visible {
     bottom: 0;
+  }
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+  .info-panel {
+    width: 50%;
+    height: 100%;
+    right: -50%;
+    bottom: unset;
+    top: 0;
+    border-top: none;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    transition: right 0.3s ease;
+  }
+
+  .info-panel--visible {
+    right: 0;
+    bottom: unset;
+  }
+
+  .control-bar {
+    bottom: 10px;
+    padding: 6px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .control-bar {
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 20px;
+  }
+
+  .control-slider {
+    width: 80px;
+  }
+
+  .control-speed-label {
+    font-size: 0.7rem;
   }
 }
 

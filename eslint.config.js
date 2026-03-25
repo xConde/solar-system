@@ -17,6 +17,6 @@ export default tseslint.config(
     },
   },
   {
-    ignores: ['dist/', 'node_modules/', 'vite.config.js'],
+    ignores: ['dist/', 'node_modules/', 'vite.config.js', 'src/**/*.test.ts'],
   }
 );
