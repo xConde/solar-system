@@ -3,9 +3,15 @@
   --color-sun: #f39c12;
   --color-space: #000;
   --color-text: #fff;
---earth-size: 2.3625rem;
+  --earth-size: 2.3625rem;
   --luna-moon-size: 0.675rem;
   --sun-size: 10rem;
+}
+
+[data-theme="light"] {
+  --color-space: #0a1628;
+  --color-text: #e8e8e8;
+  --color-sun: #f5a623;
 }
 
 @layer base, layout, celestial, moons, animations, interactions;
@@ -471,6 +477,10 @@
     margin-top: 5px;
   }
 
+  .labels-always-on .planet-label {
+    opacity: 0.7;
+  }
+
   .rotation-counter {
     position: absolute;
     top: -15px;
@@ -554,6 +564,24 @@
   line-height: 1.4;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 15px;
+}
+
+.info-panel-share {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  margin-top: 15px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+
+.info-panel-share:hover {
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .info-panel-badge {
@@ -696,4 +724,65 @@
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
   }
+}
+
+.tour-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  z-index: 200;
+}
+
+.tour-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--color-sun);
+  transition: width 0.5s ease;
+}
+
+.tour-controls {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(10, 10, 30, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 30px;
+  padding: 8px 20px;
+  pointer-events: all;
+  backdrop-filter: blur(10px);
+}
+
+.tour-btn {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-text);
+  padding: 6px 16px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background 0.2s;
+}
+
+.tour-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.tour-btn--exit {
+  border-color: rgba(231, 76, 60, 0.4);
+}
+
+.tour-step-indicator {
+  font-size: 0.8rem;
+  color: var(--color-text);
+  opacity: 0.7;
+  min-width: 50px;
+  text-align: center;
 }

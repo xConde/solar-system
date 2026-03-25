@@ -20,8 +20,14 @@ import { domCache } from './state.ts';
 import { createControlBar, initKeyboardShortcuts } from './controls.ts';
 import { initViewport, resetViewport, zoomToElement, getScale } from './viewport.ts';
 import { toggleScaleMode } from './scale-mode.ts';
+import { initTour, startTour } from './tour.ts';
+import { initRouter } from './router.ts';
+import { applySettings, setTheme, getSettings, toggleLabels } from './settings.ts';
 
 document.addEventListener('DOMContentLoaded', function () {
+  // Apply saved settings before rendering
+  applySettings();
+
   const planets = getPlanetData();
   const solarSystem = document.querySelector<HTMLDivElement>('.solar-system');
   if (!solarSystem) {
@@ -70,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   initViewport(solarSystem);
+  initTour(solarSystem, planets, infoPanel);
 
   const controlBar = createControlBar();
 
@@ -108,6 +115,39 @@ document.addEventListener('DOMContentLoaded', function () {
     );
   });
   controlBar.appendChild(scaleBtn);
+
+  // Theme toggle
+  const themeBtn = document.createElement('button');
+  themeBtn.classList.add('control-btn', 'control-btn--theme');
+  themeBtn.textContent = getSettings().theme === 'dark' ? 'Light' : 'Dark';
+  themeBtn.setAttribute('aria-label', 'Toggle theme');
+  themeBtn.addEventListener('click', () => {
+    const newTheme = getSettings().theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    themeBtn.textContent = newTheme === 'dark' ? 'Light' : 'Dark';
+  });
+  controlBar.appendChild(themeBtn);
+
+  // Labels toggle
+  const labelBtn = document.createElement('button');
+  labelBtn.classList.add('control-btn', 'control-btn--labels');
+  labelBtn.textContent = 'Labels';
+  labelBtn.setAttribute('aria-label', 'Toggle always-on labels');
+  let labelsOn = getSettings().labelsAlwaysOn;
+  if (labelsOn) labelBtn.classList.add('control-btn--active');
+  labelBtn.addEventListener('click', () => {
+    labelsOn = !labelsOn;
+    toggleLabels(labelsOn);
+    labelBtn.classList.toggle('control-btn--active', labelsOn);
+  });
+  controlBar.appendChild(labelBtn);
+
+  const tourBtn = document.createElement('button');
+  tourBtn.classList.add('control-btn', 'control-btn--tour');
+  tourBtn.textContent = 'Tour';
+  tourBtn.setAttribute('aria-label', 'Start guided tour');
+  tourBtn.addEventListener('click', startTour);
+  controlBar.appendChild(tourBtn);
 
   document.body.appendChild(controlBar);
   initKeyboardShortcuts();
@@ -160,4 +200,5 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('resize', throttle(handleViewportChange, 200));
 
   initPerformanceMonitoring();
+  initRouter(solarSystem, planets, infoPanel);
 });

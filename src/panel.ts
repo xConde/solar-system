@@ -77,6 +77,26 @@ export function showInfoPanel(panel: HTMLDivElement, planet: Planet): void {
   });
 
   fact.textContent = planet.info.funFact;
+
+  // Remove existing share button if any
+  const existingShare = panel.querySelector('.info-panel-share');
+  if (existingShare) existingShare.remove();
+
+  const shareBtn = document.createElement('button');
+  shareBtn.classList.add('info-panel-share');
+  shareBtn.textContent = 'Copy Link';
+  shareBtn.addEventListener('click', () => {
+    const url = `${window.location.origin}${window.location.pathname}#${planet.name}`;
+    navigator.clipboard.writeText(url).then(() => {
+      shareBtn.textContent = 'Copied!';
+      setTimeout(() => { shareBtn.textContent = 'Copy Link'; }, 2000);
+    }).catch(() => {
+      // Fallback: select text
+      shareBtn.textContent = url;
+    });
+  });
+  panel.appendChild(shareBtn);
+
   panel.classList.add('info-panel--visible');
   currentPanel = panel;
   currentPlanetName = planet.name;
