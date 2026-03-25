@@ -1,0 +1,46 @@
+{
+  "name": "solar-system",
+  "version": "2.0.0",
+  "description": "Interactive solar system visualization built with vanilla JavaScript and CSS",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write \"src/**/*.{ts,css}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,css}\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "deploy": "npm run build && echo 'Deploy dist/ to Cloudflare Pages'"
+  },
+  "keywords": [
+    "solar-system",
+    "visualization",
+    "javascript",
+    "css",
+    "astronomy"
+  ],
+  "author": "",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.58.2",
+    "eslint": "10.1.0",
+    "jsdom": "29.0.1",
+    "prettier": "3.8.1",
+    "typescript": "6.0.2",
+    "typescript-eslint": "8.57.2",
+    "vite": "^6.0.0",
+    "vite-plugin-pwa": "1.2.0",
+    "vitest": "4.1.1"
+  },
+  "dependencies": {
+    "web-vitals": "5.1.0"
+  }
+}

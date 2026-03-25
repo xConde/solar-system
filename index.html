@@ -4,11 +4,24 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="styles.css">
-        <title>Solar System</title>
+        <!-- CSP is set via HTTP headers in production (see public/_headers for Cloudflare Pages).
+             A meta CSP here would block Vite's HMR inline scripts in dev and is less flexible than header-based CSP. -->
+        <meta name="referrer" content="no-referrer">
+        <meta name="description" content="Interactive solar system visualization with orbiting planets, moons, and stars">
+        <meta name="theme-color" content="#000000">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta property="og:title" content="Solar System">
+        <meta property="og:description" content="Interactive solar system visualization with orbiting planets, moons, and stars">
+        <meta property="og:type" content="website">
+        <link rel="manifest" href="/manifest.json">
+        <link rel="icon" href="/icon-192.svg" type="image/svg+xml">
+        <title>Solar System v2</title>
     </head>
     <body>
-        <div class="solar-system"></div>
-        <script src="app.js"></script>
+        <h1 class="sr-only">Solar System Visualization</h1>
+        <div class="solar-system" role="img" aria-label="Interactive solar system visualization showing the sun, eight planets with their moons, and stars"></div>
+        <script type="module" src="/src/main.ts"></script>
     </body>
 </html>

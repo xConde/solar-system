@@ -1,0 +1,855 @@
+/* Custom properties — fallback defaults; overridden at runtime by updateResponsiveProperties() */
+:root {
+  --color-sun: #f39c12;
+  --color-space: #000;
+  --color-text: #fff;
+  --earth-size: 2.3625rem;
+  --luna-moon-size: 0.675rem;
+  --sun-size: 5rem;
+}
+
+[data-theme='light'] {
+  --color-space: #0a1628;
+  --color-text: #e8e8e8;
+  --color-sun: #f5a623;
+}
+
+@layer base, layout, celestial, moons, animations, interactions;
+
+/* Keyframes — must stay outside @layer blocks (global by spec) */
+@keyframes orbit {
+  0% {
+    transform: rotate(var(--rotation)) translateX(var(--distance)) translateY(-50%)
+      rotate(calc(-1 * var(--rotation)));
+  }
+  100% {
+    transform: rotate(calc(var(--rotation) + 360deg)) translateX(var(--distance)) translateY(-50%)
+      rotate(calc(-1 * var(--rotation) - 360deg));
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes glowing {
+  0% {
+    box-shadow:
+      0 0 5px var(--color-sun),
+      0 0 10px var(--color-sun),
+      0 0 15px var(--color-sun),
+      0 0 20px var(--color-sun);
+  }
+  50% {
+    box-shadow:
+      0 0 10px var(--color-sun),
+      0 0 20px var(--color-sun),
+      0 0 30px var(--color-sun),
+      0 0 40px var(--color-sun);
+  }
+  100% {
+    box-shadow:
+      0 0 5px var(--color-sun),
+      0 0 10px var(--color-sun),
+      0 0 15px var(--color-sun),
+      0 0 20px var(--color-sun);
+  }
+}
+
+@layer base {
+  html,
+  body {
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: var(--color-space);
+    color: var(--color-text);
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
+@layer layout {
+  .solar-system {
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    contain: layout style;
+    transform-origin: center center;
+    cursor: grab;
+  }
+}
+
+@layer celestial {
+  .sun {
+    position: absolute;
+    background: radial-gradient(
+      circle,
+      #fff8e1 0%,
+      #ffeb3b 15%,
+      #f39c12 40%,
+      #e67e22 70%,
+      #d35400 100%
+    );
+    width: var(--sun-size);
+    height: var(--sun-size);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+    animation-name: rotate, glowing;
+    animation-duration: 2400s, 3s;
+    animation-iteration-count: infinite, infinite;
+    animation-timing-function: linear, ease-in-out;
+    box-shadow:
+      0 0 10px var(--color-sun),
+      0 0 20px var(--color-sun),
+      0 0 40px rgba(243, 156, 18, 0.4),
+      0 0 60px rgba(243, 156, 18, 0.2);
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 150%;
+      height: 150%;
+      top: -25%;
+      left: -25%;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(255, 248, 225, 0.4),
+        rgba(243, 156, 18, 0.2) 50%,
+        rgba(243, 156, 18, 0.05) 70%,
+        transparent 100%
+      );
+      z-index: -1;
+    }
+  }
+
+  .planet,
+  .moon {
+    position: absolute;
+    opacity: 0;
+    border-radius: 50%;
+    animation-name: orbit;
+    animation-duration: var(--duration);
+    animation-iteration-count: infinite;
+    transform: rotate(var(--rotation)) translateX(calc(-50% + var(--distance) em)) translateY(-50%);
+    transform-style: preserve-3d;
+    animation-timing-function: linear;
+    transition: transform 0.5s ease;
+  }
+
+  .planet {
+    z-index: 5;
+    will-change: transform;
+  }
+
+  .mercury {
+    --distance: 5rem;
+    --duration: 88s;
+    --rotation: 320deg;
+  }
+
+  .venus {
+    --distance: 7.5rem;
+    --duration: 225s;
+    --rotation: 10deg;
+  }
+
+  .earth {
+    --distance: 10rem;
+    --duration: 365s;
+    --rotation: 40deg;
+  }
+
+  .mars {
+    --distance: 13rem;
+    --duration: 687s;
+    --rotation: 60deg;
+  }
+
+  .jupiter {
+    --distance: 18rem;
+    --duration: 4300s;
+    --rotation: 80deg;
+  }
+
+  .saturn {
+    position: relative;
+    --distance: 22rem;
+    --duration: 10750s;
+    --rotation: 100deg;
+  }
+
+  .saturn-ring {
+    position: absolute;
+    width: 150%;
+    height: 30%;
+    border-radius: 50%;
+    border: 1px solid rgba(241, 196, 15, 0.7);
+    box-shadow: 0 0 3px rgba(241, 196, 15, 0.3);
+    box-sizing: border-box;
+    transform: rotate(-30deg) scale(1.2);
+    top: 40%;
+    left: -25%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .uranus {
+    --distance: 26rem;
+    --duration: 30600s;
+    --rotation: 120deg;
+  }
+
+  .neptune {
+    --distance: 30rem;
+    --duration: 60225s;
+    --rotation: 140deg;
+  }
+
+  .ceres {
+    --distance: 14.5rem;
+    --duration: 1682s;
+    --rotation: 200deg;
+  }
+
+  .pluto {
+    --distance: 34rem;
+    --duration: 90560s;
+    --rotation: 180deg;
+  }
+
+  .dwarf-planet {
+    filter: brightness(0.8);
+  }
+
+  .kuiper-belt {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72rem;
+    height: 72rem;
+    border: 2px dashed rgba(255, 255, 255, 0.03);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .orbit-path {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .starfield-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .asteroid-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .comet-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    pointer-events: none;
+  }
+}
+
+@layer moons {
+  .moon {
+    z-index: 4;
+  }
+
+  /* Earth */
+  .moon-luna {
+    --distance: 1rem;
+    --duration: 27s;
+    --rotation: 0deg;
+  }
+
+  /* Mars */
+  .moon-phobos {
+    --distance: 0.5rem;
+    --duration: 8s;
+    --rotation: 0deg;
+  }
+
+  .moon-deimos {
+    --distance: 0.75rem;
+    --duration: 30s;
+    --rotation: 45deg;
+  }
+
+  /* Jupiter */
+  .moon-io {
+    --distance: 1.5rem;
+    --duration: 42s;
+    --rotation: 0deg;
+  }
+
+  .moon-europa {
+    --distance: 2rem;
+    --duration: 85s;
+    --rotation: 30deg;
+  }
+
+  .moon-ganymede {
+    --distance: 2.5rem;
+    --duration: 172s;
+    --rotation: 60deg;
+  }
+
+  .moon-callisto {
+    --distance: 3rem;
+    --duration: 400s;
+    --rotation: 90deg;
+  }
+
+  /* Saturn */
+  .moon-titan {
+    --distance: 1.75rem;
+    --duration: 382s;
+    --rotation: 0deg;
+  }
+
+  /* Uranus */
+  .moon-titania {
+    --distance: 1.25rem;
+    --duration: 42s;
+    --rotation: 0deg;
+  }
+
+  .moon-oberon {
+    --distance: 1.75rem;
+    --duration: 65s;
+    --rotation: 45deg;
+  }
+
+  /* Neptune */
+  .moon-triton {
+    --distance: 1.25rem;
+    --duration: 141s;
+    --rotation: 0deg;
+  }
+
+  /* Pluto */
+  .moon-charon {
+    --distance: 1rem;
+    --duration: 153s;
+    --rotation: 0deg;
+  }
+}
+
+@layer interactions {
+  .planet {
+    &:before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      min-width: 44px;
+      min-height: 44px;
+      z-index: 1;
+    }
+
+    &:hover {
+      z-index: 15;
+
+      &::before {
+        content: attr(data-label);
+        position: absolute;
+        background-color: transparent;
+        transition: all 0.3s ease-in-out;
+      }
+
+      & > .planet-label {
+        opacity: 1;
+      }
+    }
+
+    &.clicked {
+      &::before {
+        content: attr(data-label);
+        position: absolute;
+        background-color: transparent;
+        transition: all 0.3s ease-in-out;
+      }
+
+      & > .planet-label {
+        opacity: 1;
+      }
+    }
+
+    &.mars::before,
+    &.earth::before,
+    &.venus::before {
+      top: -150%;
+      left: -150%;
+      width: 400%;
+      height: 400%;
+    }
+
+    &.mercury::before {
+      top: -350%;
+      left: -350%;
+      width: 800%;
+      height: 800%;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-text);
+      outline-offset: 4px;
+      z-index: 15;
+
+      & > .planet-label {
+        opacity: 1;
+      }
+    }
+  }
+
+  .planet-label {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8rem;
+    white-space: nowrap;
+    text-transform: capitalize;
+    text-align: center;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: var(--color-text);
+    padding: 4px 8px;
+    border-radius: 5px;
+    text-shadow: 0 0 2px var(--color-space);
+    margin-top: 5px;
+  }
+
+  .labels-always-on .planet-label {
+    opacity: 0.7;
+  }
+
+  .rotation-counter {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    height: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    text-align: center;
+    font-size: 9px;
+    font-weight: bold;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    padding: 1px 4px;
+    line-height: normal;
+  }
+
+  .planet:hover > .rotation-counter,
+  .planet.clicked > .rotation-counter {
+    opacity: 0.6;
+  }
+
+  .tour-dimmed > .planet-label,
+  .tour-dimmed > .rotation-counter {
+    opacity: 0 !important;
+  }
+}
+
+.info-panel {
+  position: fixed;
+  right: -320px;
+  top: 0;
+  width: 300px;
+  height: 100%;
+  background: rgba(10, 10, 30, 0.95);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  z-index: 100;
+  transition: right 0.3s ease;
+  overflow-y: auto;
+  color: var(--color-text);
+  font-family: 'Arial', sans-serif;
+  visibility: hidden;
+}
+
+.info-panel--visible {
+  right: 0;
+  visibility: visible;
+}
+
+.info-panel-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: var(--color-text);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+.info-panel-close:hover {
+  opacity: 0.7;
+}
+
+.info-panel-title {
+  margin: 0 0 20px;
+  font-size: 1.5rem;
+  text-transform: capitalize;
+}
+
+.info-panel-data {
+  margin: 0 0 20px;
+  padding: 0;
+}
+
+.info-panel-data dt {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+  margin-top: 12px;
+}
+
+.info-panel-data dd {
+  margin: 4px 0 0;
+  font-size: 1rem;
+}
+
+.info-panel-fact {
+  font-style: italic;
+  opacity: 0.8;
+  line-height: 1.4;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 15px;
+}
+
+.info-panel-share {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  margin-top: 15px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+
+.info-panel-share:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.info-panel-badge {
+  display: inline-block;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+  .info-panel {
+    right: unset;
+    bottom: -100%;
+    top: unset;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    transition: bottom 0.3s ease;
+  }
+
+  .info-panel--visible {
+    bottom: 0;
+  }
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+  .info-panel {
+    width: 50%;
+    height: 100%;
+    right: -50%;
+    bottom: unset;
+    top: 0;
+    border-top: none;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    transition: right 0.3s ease;
+  }
+
+  .info-panel--visible {
+    right: 0;
+    bottom: unset;
+  }
+
+  .control-bar {
+    bottom: 10px;
+    padding: 6px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .control-bar {
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 16px;
+    flex-wrap: wrap;
+    max-width: 90vw;
+    justify-content: center;
+  }
+
+  .control-btn {
+    font-size: 0.65rem;
+    padding: 4px 8px;
+  }
+
+  .control-btn--icon {
+    min-width: 30px;
+    min-height: 30px;
+    font-size: 0.9rem;
+  }
+
+  .control-slider {
+    width: 60px;
+  }
+
+  .control-speed-label {
+    font-size: 0.6rem;
+  }
+
+  .control-separator {
+    display: none;
+  }
+}
+
+.control-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(10, 10, 30, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 30px;
+  padding: 6px 14px;
+  z-index: 50;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.control-separator {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.15);
+  margin: 0 2px;
+}
+
+.control-btn {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: var(--color-text);
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 6px 14px;
+  border-radius: 6px;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+
+.control-btn--icon {
+  font-size: 1.1rem;
+  padding: 6px 10px;
+  min-width: 36px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.control-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.control-btn--active {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.control-btn--tour {
+  border-color: var(--color-sun);
+  color: var(--color-sun);
+}
+
+.control-btn--tour:hover {
+  background: rgba(243, 156, 18, 0.15);
+}
+
+.control-slider {
+  width: 120px;
+  accent-color: var(--color-sun);
+  cursor: pointer;
+}
+
+.control-speed-label {
+  font-size: 0.8rem;
+  color: var(--color-text);
+  opacity: 0.7;
+  min-width: 32px;
+  text-align: center;
+}
+
+.scale-logarithmic .planet,
+.scale-logarithmic .moon {
+  transition:
+    width 0.8s ease,
+    height 0.8s ease;
+}
+
+.scale-logarithmic .planet-label {
+  opacity: 0.7;
+  font-size: 0.65rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .planet,
+  .moon {
+    animation: none;
+  }
+
+  .sun {
+    animation-name: glowing;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+  }
+}
+
+.tour-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+  z-index: 200;
+}
+
+.tour-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--color-sun);
+  transition: width 0.5s ease;
+}
+
+.tour-controls {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(10, 10, 30, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 30px;
+  padding: 8px 20px;
+  pointer-events: all;
+  backdrop-filter: blur(10px);
+}
+
+.tour-btn {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--color-text);
+  padding: 6px 16px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background 0.2s;
+}
+
+.tour-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.tour-btn--exit {
+  border-color: rgba(231, 76, 60, 0.4);
+}
+
+.tour-step-indicator {
+  font-size: 0.8rem;
+  color: var(--color-text);
+  opacity: 0.7;
+  min-width: 50px;
+  text-align: center;
+}
