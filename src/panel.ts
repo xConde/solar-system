@@ -87,13 +87,18 @@ export function showInfoPanel(panel: HTMLDivElement, planet: Planet): void {
   shareBtn.textContent = 'Copy Link';
   shareBtn.addEventListener('click', () => {
     const url = `${window.location.origin}${window.location.pathname}#${planet.name}`;
-    navigator.clipboard.writeText(url).then(() => {
-      shareBtn.textContent = 'Copied!';
-      setTimeout(() => { shareBtn.textContent = 'Copy Link'; }, 2000);
-    }).catch(() => {
-      // Fallback: select text
-      shareBtn.textContent = url;
-    });
+    navigator.clipboard
+      .writeText(url)
+      .then(() => {
+        shareBtn.textContent = 'Copied!';
+        setTimeout(() => {
+          shareBtn.textContent = 'Copy Link';
+        }, 2000);
+      })
+      .catch(() => {
+        // Fallback: select text
+        shareBtn.textContent = url;
+      });
   });
   panel.appendChild(shareBtn);
 

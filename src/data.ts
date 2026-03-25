@@ -87,7 +87,8 @@ export function getPlanetData(): Planet[] {
         distanceFromSun: '413.7 million km',
         orbitalPeriod: '1,682 days',
         numberOfMoons: 0,
-        funFact: 'Ceres is the largest object in the asteroid belt and contains about a third of the belt\'s total mass.',
+        funFact:
+          "Ceres is the largest object in the asteroid belt and contains about a third of the belt's total mass.",
       },
     },
     {
@@ -173,16 +174,15 @@ export function getPlanetData(): Planet[] {
       distance: 39.5,
       orbitalPeriod: 90560,
       type: 'dwarf-planet',
-      moons: [
-        { name: 'charon', distance: 10, color: '#9e9e9e', sizeRatio: 0.8 },
-      ],
+      moons: [{ name: 'charon', distance: 10, color: '#9e9e9e', sizeRatio: 0.8 }],
       initialAngle: Math.random() * 2 * Math.PI,
       info: {
         diameter: '2,377 km',
         distanceFromSun: '5.9 billion km',
         orbitalPeriod: '90,560 days',
         numberOfMoons: 5,
-        funFact: 'Pluto was reclassified as a dwarf planet in 2006, but it still has a heart-shaped glacier.',
+        funFact:
+          'Pluto was reclassified as a dwarf planet in 2006, but it still has a heart-shaped glacier.',
       },
     },
   ];

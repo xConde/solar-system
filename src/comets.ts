@@ -44,6 +44,7 @@ function resizeCanvas(): void {
 function drawComets(time: number): void {
   if (!ctx || !canvas) return;
 
+  const context = ctx;
   const w = window.innerWidth;
   const h = window.innerHeight;
   const centerX = w / 2;
@@ -51,19 +52,21 @@ function drawComets(time: number): void {
   const minDim = Math.min(w, h);
   const elapsed = time * 0.001;
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  context.clearRect(0, 0, canvas.width, canvas.height);
 
-  COMETS.forEach(comet => {
+  COMETS.forEach((comet) => {
     // Kepler-like elliptical orbit (simplified)
     const meanAnomaly = (elapsed / comet.periodSeconds) * Math.PI * 2 + comet.angle;
     // Approximate eccentric anomaly (1 iteration of Kepler's equation)
     const E = meanAnomaly + comet.eccentricity * Math.sin(meanAnomaly);
 
     // True anomaly
-    const trueAnomaly = 2 * Math.atan2(
-      Math.sqrt(1 + comet.eccentricity) * Math.sin(E / 2),
-      Math.sqrt(1 - comet.eccentricity) * Math.cos(E / 2)
-    );
+    const trueAnomaly =
+      2 *
+      Math.atan2(
+        Math.sqrt(1 + comet.eccentricity) * Math.sin(E / 2),
+        Math.sqrt(1 - comet.eccentricity) * Math.cos(E / 2),
+      );
 
     // Radius (conic section formula)
     // With e close to 1 the denominator (1 + e*cos(ν)) approaches 0 near aphelion
@@ -71,7 +74,7 @@ function drawComets(time: number): void {
     // stays on-screen and no NaN/Infinity propagates into canvas drawing calls.
     const a = comet.semiMajorAxis * minDim;
     const denom = 1 + comet.eccentricity * Math.cos(trueAnomaly);
-    const rRaw = denom > 0 ? a * (1 - comet.eccentricity * comet.eccentricity) / denom : Infinity;
+    const rRaw = denom > 0 ? (a * (1 - comet.eccentricity * comet.eccentricity)) / denom : Infinity;
     const r = Math.min(rRaw, a * 3);
 
     const x = centerX + r * Math.cos(trueAnomaly);
@@ -84,23 +87,23 @@ function drawComets(time: number): void {
     const tailEndX = x + Math.cos(tailAngle) * comet.tailLength;
     const tailEndY = y + Math.sin(tailAngle) * comet.tailLength;
 
-    const gradient = ctx!.createLinearGradient(x, y, tailEndX, tailEndY);
+    const gradient = context.createLinearGradient(x, y, tailEndX, tailEndY);
     gradient.addColorStop(0, 'rgba(200, 220, 255, 0.8)');
     gradient.addColorStop(0.3, 'rgba(200, 220, 255, 0.3)');
     gradient.addColorStop(1, 'rgba(200, 220, 255, 0)');
 
-    ctx!.beginPath();
-    ctx!.moveTo(x, y);
-    ctx!.lineTo(tailEndX, tailEndY);
-    ctx!.strokeStyle = gradient;
-    ctx!.lineWidth = 2;
-    ctx!.stroke();
+    context.beginPath();
+    context.moveTo(x, y);
+    context.lineTo(tailEndX, tailEndY);
+    context.strokeStyle = gradient;
+    context.lineWidth = 2;
+    context.stroke();
 
     // Draw comet head
-    ctx!.beginPath();
-    ctx!.arc(x, y, 2, 0, Math.PI * 2);
-    ctx!.fillStyle = 'rgba(220, 235, 255, 0.9)';
-    ctx!.fill();
+    context.beginPath();
+    context.arc(x, y, 2, 0, Math.PI * 2);
+    context.fillStyle = 'rgba(220, 235, 255, 0.9)';
+    context.fill();
   });
 
   animationId = requestAnimationFrame(drawComets);

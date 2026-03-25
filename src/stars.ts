@@ -58,19 +58,20 @@ function resizeCanvas(): void {
 function drawStars(time: number): void {
   if (!ctx || !canvas) return;
 
+  const context = ctx;
   const w = window.innerWidth;
   const h = window.innerHeight;
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  context.clearRect(0, 0, canvas.width, canvas.height);
 
   stars.forEach((star) => {
     const twinkle = Math.sin(time * 0.001 * star.twinkleSpeed + star.twinkleOffset);
     const opacity = star.baseOpacity + twinkle * 0.3;
 
-    ctx!.beginPath();
-    ctx!.arc(star.x * w, star.y * h, star.size, 0, Math.PI * 2);
-    ctx!.fillStyle = `rgba(255, 255, 255, ${Math.max(0.1, Math.min(1, opacity))})`;
-    ctx!.fill();
+    context.beginPath();
+    context.arc(star.x * w, star.y * h, star.size, 0, Math.PI * 2);
+    context.fillStyle = `rgba(255, 255, 255, ${Math.max(0.1, Math.min(1, opacity))})`;
+    context.fill();
   });
 
   animationId = requestAnimationFrame(drawStars);

@@ -106,7 +106,7 @@ export function endTour(): void {
   state.active = false;
 
   // Restore planet opacities
-  domCache.planets.forEach(el => {
+  domCache.planets.forEach((el) => {
     el.style.opacity = '1';
   });
 

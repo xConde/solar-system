@@ -35,7 +35,6 @@ export function getSunRadius(): number {
   return (sunSize * fontSize) / 2;
 }
 
-
 export function calculateScalingFactor(): number {
   const minDimension = Math.min(window.innerWidth, window.innerHeight);
   return minDimension / 150;
@@ -158,10 +157,7 @@ export function checkPlanetsOffScreen(
   }
 }
 
-export function scheduleCheck(
-  planets: Planet[],
-  scalingFactor: number,
-): void {
+export function scheduleCheck(planets: Planet[], scalingFactor: number): void {
   if (!checkScheduled) {
     setCheckScheduled(true);
     requestAnimationFrame(() => {

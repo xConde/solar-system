@@ -4,7 +4,12 @@ import { getPlanetData } from './data.ts';
 import { createSun, createPlanet, createMoons, createOrbitPath } from './dom.ts';
 import { createInfoPanel, showInfoPanel } from './panel.ts';
 import { initStarfield, handleStarfieldResize, pauseStarfield, resumeStarfield } from './stars.ts';
-import { initAsteroidBelt, handleAsteroidResize, pauseAsteroids, resumeAsteroids } from './asteroids.ts';
+import {
+  initAsteroidBelt,
+  handleAsteroidResize,
+  pauseAsteroids,
+  resumeAsteroids,
+} from './asteroids.ts';
 import { initComets, handleCometResize, pauseComets, resumeComets } from './comets.ts';
 import { toggleAmbientAudio, playPlanetTone, getStoredAudioPreference } from './audio.ts';
 import {
@@ -110,8 +115,9 @@ document.addEventListener('DOMContentLoaded', function () {
   scaleBtn.addEventListener('click', () => {
     const mode = toggleScaleMode(planets);
     scaleBtn.textContent = mode === 'stylized' ? 'Log' : 'Art';
-    scaleBtn.setAttribute('aria-label',
-      mode === 'stylized' ? 'Toggle logarithmic scale' : 'Toggle stylized scale'
+    scaleBtn.setAttribute(
+      'aria-label',
+      mode === 'stylized' ? 'Toggle logarithmic scale' : 'Toggle stylized scale',
     );
   });
   controlBar.appendChild(scaleBtn);

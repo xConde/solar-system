@@ -59,7 +59,7 @@ function saveSettings(settings: Settings): void {
   }
 }
 
-let currentSettings = loadSettings();
+const currentSettings = loadSettings();
 
 export function getSettings(): Settings {
   return currentSettings;

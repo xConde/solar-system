@@ -14,23 +14,27 @@ function applyTransform(container: HTMLElement): void {
 
 export function initViewport(container: HTMLElement): void {
   // Wheel zoom
-  container.addEventListener('wheel', (e: WheelEvent) => {
-    e.preventDefault();
-    const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
-    const newScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, scale * zoomFactor));
+  container.addEventListener(
+    'wheel',
+    (e: WheelEvent) => {
+      e.preventDefault();
+      const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
+      const newScale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, scale * zoomFactor));
 
-    // Zoom toward cursor position
-    const rect = container.getBoundingClientRect();
-    const cursorX = e.clientX - rect.left - rect.width / 2;
-    const cursorY = e.clientY - rect.top - rect.height / 2;
+      // Zoom toward cursor position
+      const rect = container.getBoundingClientRect();
+      const cursorX = e.clientX - rect.left - rect.width / 2;
+      const cursorY = e.clientY - rect.top - rect.height / 2;
 
-    const scaleChange = newScale / scale;
-    translateX = cursorX - scaleChange * (cursorX - translateX);
-    translateY = cursorY - scaleChange * (cursorY - translateY);
+      const scaleChange = newScale / scale;
+      translateX = cursorX - scaleChange * (cursorX - translateX);
+      translateY = cursorY - scaleChange * (cursorY - translateY);
 
-    scale = newScale;
-    applyTransform(container);
-  }, { passive: false });
+      scale = newScale;
+      applyTransform(container);
+    },
+    { passive: false },
+  );
 
   // Drag pan
   container.addEventListener('pointerdown', (e: PointerEvent) => {
@@ -74,8 +78,10 @@ export function zoomToElement(container: HTMLElement, element: HTMLElement): voi
   const elementRect = element.getBoundingClientRect();
 
   // Calculate where the element center is relative to the container center
-  const elementCenterX = elementRect.left + elementRect.width / 2 - containerRect.left - containerRect.width / 2;
-  const elementCenterY = elementRect.top + elementRect.height / 2 - containerRect.top - containerRect.height / 2;
+  const elementCenterX =
+    elementRect.left + elementRect.width / 2 - containerRect.left - containerRect.width / 2;
+  const elementCenterY =
+    elementRect.top + elementRect.height / 2 - containerRect.top - containerRect.height / 2;
 
   scale = 2;
   translateX = -elementCenterX * scale;

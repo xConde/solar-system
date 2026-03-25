@@ -46,26 +46,27 @@ function resizeCanvas(): void {
 function drawAsteroids(time: number): void {
   if (!ctx || !canvas) return;
 
+  const context = ctx;
   const w = window.innerWidth;
   const h = window.innerHeight;
   const centerX = w / 2;
   const centerY = h / 2;
   const minDim = Math.min(w, h);
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  context.clearRect(0, 0, canvas.width, canvas.height);
 
   const elapsed = time * 0.001;
 
-  asteroids.forEach(asteroid => {
+  asteroids.forEach((asteroid) => {
     const currentAngle = asteroid.angle + elapsed * asteroid.speed;
     const radius = asteroid.distance * minDim;
     const x = centerX + Math.cos(currentAngle) * radius;
     const y = centerY + Math.sin(currentAngle) * radius;
 
-    ctx!.beginPath();
-    ctx!.arc(x, y, asteroid.size, 0, Math.PI * 2);
-    ctx!.fillStyle = `rgba(180, 170, 160, ${asteroid.opacity})`;
-    ctx!.fill();
+    context.beginPath();
+    context.arc(x, y, asteroid.size, 0, Math.PI * 2);
+    context.fillStyle = `rgba(180, 170, 160, ${asteroid.opacity})`;
+    context.fill();
   });
 
   animationId = requestAnimationFrame(drawAsteroids);

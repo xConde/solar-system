@@ -8,7 +8,7 @@
   --sun-size: 10rem;
 }
 
-[data-theme="light"] {
+[data-theme='light'] {
   --color-space: #0a1628;
   --color-text: #e8e8e8;
   --color-sun: #f5a623;
@@ -60,7 +60,6 @@
       0 0 20px var(--color-sun);
   }
 }
-
 
 @layer base {
   html,
@@ -704,7 +703,9 @@
 
 .scale-logarithmic .planet,
 .scale-logarithmic .moon {
-  transition: width 0.8s ease, height 0.8s ease;
+  transition:
+    width 0.8s ease,
+    height 0.8s ease;
 }
 
 .scale-logarithmic .planet-label {

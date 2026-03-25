@@ -5,11 +5,11 @@ let isPaused = false;
 
 function getOrbitalAnimations(): Animation[] {
   const animations: Animation[] = [];
-  domCache.planets.forEach(planet => {
-    planet.getAnimations().forEach(anim => animations.push(anim));
+  domCache.planets.forEach((planet) => {
+    planet.getAnimations().forEach((anim) => animations.push(anim));
     // Get moon animations too
-    planet.querySelectorAll('.moon').forEach(moon => {
-      moon.getAnimations().forEach(anim => animations.push(anim));
+    planet.querySelectorAll('.moon').forEach((moon) => {
+      moon.getAnimations().forEach((anim) => animations.push(anim));
     });
   });
   return animations;
@@ -18,7 +18,7 @@ function getOrbitalAnimations(): Animation[] {
 export function setPlaybackRate(rate: number): void {
   currentPlaybackRate = rate;
   if (!isPaused) {
-    getOrbitalAnimations().forEach(anim => {
+    getOrbitalAnimations().forEach((anim) => {
       anim.playbackRate = rate;
     });
   }
@@ -29,9 +29,9 @@ export function togglePause(): boolean {
   const animations = getOrbitalAnimations();
 
   if (isPaused) {
-    animations.forEach(anim => anim.pause());
+    animations.forEach((anim) => anim.pause());
   } else {
-    animations.forEach(anim => {
+    animations.forEach((anim) => {
       anim.playbackRate = currentPlaybackRate;
       anim.play();
     });

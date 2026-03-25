@@ -9,7 +9,7 @@ describe('getPlanetData', () => {
   });
 
   it('each planet has required properties', () => {
-    planets.forEach(planet => {
+    planets.forEach((planet) => {
       expect(planet.name).toBeTruthy();
       expect(typeof planet.distance).toBe('number');
       expect(typeof planet.orbitalPeriod).toBe('number');
@@ -28,8 +28,8 @@ describe('getPlanetData', () => {
   });
 
   it('all moons have required properties', () => {
-    planets.forEach(planet => {
-      planet.moons.forEach(moon => {
+    planets.forEach((planet) => {
+      planet.moons.forEach((moon) => {
         expect(moon.name).toBeTruthy();
         expect(typeof moon.distance).toBe('number');
         expect(typeof moon.sizeRatio).toBe('number');
@@ -39,7 +39,7 @@ describe('getPlanetData', () => {
   });
 
   it('each planet has info data', () => {
-    planets.forEach(planet => {
+    planets.forEach((planet) => {
       expect(planet.info).toBeDefined();
       expect(planet.info!.diameter).toBeTruthy();
       expect(planet.info!.distanceFromSun).toBeTruthy();
@@ -50,14 +50,14 @@ describe('getPlanetData', () => {
   });
 
   it('has exactly 8 regular planets', () => {
-    const regularPlanets = planets.filter(p => p.type === 'planet');
+    const regularPlanets = planets.filter((p) => p.type === 'planet');
     expect(regularPlanets.length).toBe(8);
   });
 
   it('has dwarf planets', () => {
-    const dwarfPlanets = planets.filter(p => p.type === 'dwarf-planet');
+    const dwarfPlanets = planets.filter((p) => p.type === 'dwarf-planet');
     expect(dwarfPlanets.length).toBeGreaterThan(0);
-    expect(dwarfPlanets.map(p => p.name)).toContain('pluto');
-    expect(dwarfPlanets.map(p => p.name)).toContain('ceres');
+    expect(dwarfPlanets.map((p) => p.name)).toContain('pluto');
+    expect(dwarfPlanets.map((p) => p.name)).toContain('ceres');
   });
 });

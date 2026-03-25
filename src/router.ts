@@ -11,7 +11,7 @@ let panel: HTMLDivElement | null = null;
 export function initRouter(
   solarSystem: HTMLElement,
   planetData: Planet[],
-  infoPanel: HTMLDivElement
+  infoPanel: HTMLDivElement,
 ): void {
   planets = planetData;
   container = solarSystem;
@@ -33,7 +33,7 @@ function handleHash(): void {
   const hash = window.location.hash.slice(1).toLowerCase();
   if (!hash || !container || !panel) return;
 
-  const planetIndex = planets.findIndex(p => p.name === hash);
+  const planetIndex = planets.findIndex((p) => p.name === hash);
   if (planetIndex === -1) return;
 
   const planet = planets[planetIndex];
