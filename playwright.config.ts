@@ -3,6 +3,11 @@ import { defineConfig } from '@playwright/test';
 export default defineConfig({
   testDir: './e2e',
   timeout: 30000,
+  expect: {
+    toHaveScreenshot: {
+      maxDiffPixelRatio: 0.01, // 1% tolerance for anti-aliasing
+    },
+  },
   use: {
     baseURL: 'http://localhost:4173',
     screenshot: 'only-on-failure',

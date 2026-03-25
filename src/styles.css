@@ -674,6 +674,16 @@
   text-align: center;
 }
 
+.scale-logarithmic .planet,
+.scale-logarithmic .moon {
+  transition: width 0.8s ease, height 0.8s ease;
+}
+
+.scale-logarithmic .planet-label {
+  opacity: 0.7;
+  font-size: 0.65rem;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .planet,
   .moon {

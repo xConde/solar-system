@@ -1,4 +1,5 @@
 import './styles.css';
+import { initPerformanceMonitoring } from './performance.ts';
 import { getPlanetData } from './data.ts';
 import { createSun, createPlanet, createMoons, createOrbitPath } from './dom.ts';
 import { createInfoPanel, showInfoPanel } from './panel.ts';
@@ -18,6 +19,7 @@ import {
 import { domCache } from './state.ts';
 import { createControlBar, initKeyboardShortcuts } from './controls.ts';
 import { initViewport, resetViewport, zoomToElement, getScale } from './viewport.ts';
+import { toggleScaleMode } from './scale-mode.ts';
 
 document.addEventListener('DOMContentLoaded', function () {
   const planets = getPlanetData();
@@ -94,6 +96,19 @@ document.addEventListener('DOMContentLoaded', function () {
   });
   controlBar.appendChild(audioBtn);
 
+  const scaleBtn = document.createElement('button');
+  scaleBtn.classList.add('control-btn', 'control-btn--scale');
+  scaleBtn.textContent = 'Log';
+  scaleBtn.setAttribute('aria-label', 'Toggle logarithmic scale');
+  scaleBtn.addEventListener('click', () => {
+    const mode = toggleScaleMode(planets);
+    scaleBtn.textContent = mode === 'stylized' ? 'Log' : 'Art';
+    scaleBtn.setAttribute('aria-label',
+      mode === 'stylized' ? 'Toggle logarithmic scale' : 'Toggle stylized scale'
+    );
+  });
+  controlBar.appendChild(scaleBtn);
+
   document.body.appendChild(controlBar);
   initKeyboardShortcuts();
 
@@ -143,4 +158,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Still need resize for continuous scaling (not just breakpoint changes)
   window.addEventListener('resize', throttle(handleViewportChange, 200));
+
+  initPerformanceMonitoring();
 });
