@@ -2,6 +2,8 @@
 
 An interactive solar system visualization built with TypeScript, CSS, and Canvas. Features orbiting planets with moons, dwarf planets, asteroid belt, comets, and a guided tour with real astronomical data.
 
+![Solar System Demo](solar-system.gif)
+
 ## Features
 
 - **10 celestial bodies**: 8 planets + Ceres and Pluto (dwarf planets) with accurate relative properties
