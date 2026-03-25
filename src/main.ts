@@ -20,6 +20,14 @@ document.addEventListener('DOMContentLoaded', function () {
     console.error('Solar System: required .solar-system element not found in DOM.');
     return;
   }
+
+  const liveRegion = document.createElement('div');
+  liveRegion.setAttribute('aria-live', 'polite');
+  liveRegion.setAttribute('aria-atomic', 'true');
+  liveRegion.classList.add('sr-only');
+  liveRegion.id = 'rotation-announcer';
+  solarSystem.appendChild(liveRegion);
+
   const scalingFactor = calculateScalingFactor();
 
   updateResponsiveProperties();

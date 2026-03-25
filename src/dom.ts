@@ -37,10 +37,25 @@ export function createPlanet(planet: Planet, solarSystem: HTMLElement): HTMLDivE
   rotationCounterEl.innerText = '';
   planetEl.appendChild(rotationCounterEl);
 
+  planetEl.setAttribute('aria-label', `Planet ${planet.name}`);
+  planetEl.setAttribute('tabindex', '0');
+  planetEl.setAttribute('role', 'button');
+
   planetEl.addEventListener('click', handlePlanetClick);
+  planetEl.addEventListener('keydown', (event: KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      planetEl.classList.toggle('clicked');
+    }
+  });
   planetEl.addEventListener('animationiteration', () => {
     const currentValue = parseInt(rotationCounterEl.innerText, 10) || 0;
-    rotationCounterEl.innerText = String(currentValue + 1);
+    const newValue = currentValue + 1;
+    rotationCounterEl.innerText = String(newValue);
+    const announcer = document.getElementById('rotation-announcer');
+    if (announcer) {
+      announcer.textContent = `${planet.name} completed orbit ${newValue}`;
+    }
   });
 
   return planetEl;
